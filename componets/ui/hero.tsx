@@ -10,11 +10,11 @@ export default function Hero() {
 				<Image
 					src='/assets/hero.png'
 					fill
-					className='invert'
+					className='dark:invert'
 					alt='hero image'
 				/>
 			</div>
-			{/* left */}
+			{/* left large screens*/}
 			<div className=' w-full h-full flex flex-col items-center justify-center text-7xl lg:text-8xl xxl:text-9xl lg:col-span-5 xxl:col-span-6'>
 
 				<h1 className="text-center lg:hidden">
@@ -30,19 +30,19 @@ export default function Hero() {
 				<div className='text-lg mt-8'>
 					<Link
 						href='/browseitems'
-						className='flex items-center justify-center py-3 px-10 rounded-md border bg-gradient-to-r from-calltoaction  to-gray-900 transform transition-transform duration-500 ease-in-out hover:scale-105'>
+						className='flex items-center bg-calltoaction text-white from-calltoaction to-white justify-center py-3 px-10 rounded-md border dark:bg-gradient-to-r dark:from-calltoaction  dark:to-gray-900 transform transition-transform duration-500 ease-in-out hover:scale-105'>
 						{" "}
 						Browse Itmes
 					</Link>
 				</div>
 			</div>
 
-			{/* right */}
-			<div className='hidden h-full lg:h-5/6 xxl:h-full relative w-full lg:col-span-7 xxl:col-span-6 lg:flex items-center justify-center'>
+			{/* right large screen */}
+			<div className='hidden h-full xxl:h-full relative w-full lg:col-span-7 xxl:col-span-6 lg:flex items-center justify-center'>
 				<Image
 					src='/assets/hero.png'
 					fill
-					className='invert'
+					className='dark:invert lg:max-h-[80%]'
 					alt='hero image'
 				/>
 			</div>

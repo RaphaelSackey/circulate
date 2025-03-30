@@ -3,11 +3,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
-import { usePathname } from 'next/navigation'
+import { usePathname } from "next/navigation";
+import ModeToggle from "./modetoggle";
 
 export default function Navbar() {
 	const [isSidebarOpen, setSidebarOpen] = useState(false);
-	const pathname = usePathname()
+	const pathname = usePathname();
 
 	return (
 		<>
@@ -57,17 +58,21 @@ export default function Navbar() {
 					</div>
 					<Link
 						href='/browseitems'
-						className='bg-calltoaction flex items-center justify-center rounded-sm px-5 py-1 hover:opacity-85 text-xl bg-gradient-to-r from-calltoaction to-gray-900'>
+						className='flex bg-calltoaction text-white items-center justify-center rounded-sm px-5 py-1 hover:opacity-85 text-xl dark:bg-gradient-to-r from-calltoaction to-gray-900'>
 						Browse Items
 					</Link>
+					<ModeToggle />
 				</div>
 
 				{/* Hamburger Icon for Mobile */}
-				<button
-					className='lg:hidden'
-					onClick={() => setSidebarOpen(true)}>
-					<Menu size={32} />
-				</button>
+				<div className='lg:hidden flex items-center justify-center gap-3'>
+					<button
+						className='lg:hidden'
+						onClick={() => setSidebarOpen(true)}>
+						<Menu size={32} />
+					</button>
+					<ModeToggle />
+				</div>
 			</div>
 
 			{/* Sidebar */}
@@ -83,31 +88,41 @@ export default function Navbar() {
 				<div className='flex flex-col mt-16 gap-5 items-center'>
 					<Link
 						href='/'
-						className={`hover:underline ${pathname === '/'? 'active' : ''}`}
+						className={`hover:underline ${
+							pathname === "/" ? "active" : ""
+						}`}
 						onClick={() => setSidebarOpen(false)}>
 						Home
 					</Link>
 					<Link
 						href='/profile'
-						className={`hover:underline ${pathname === '/profile'? 'active' : ''}`}
+						className={`hover:underline ${
+							pathname === "/profile" ? "active" : ""
+						}`}
 						onClick={() => setSidebarOpen(false)}>
 						Profile
 					</Link>
 					<Link
 						href='/aut/login'
-						className={`hover:underline ${pathname === '/aut/login'? 'active' : ''}`}
+						className={`hover:underline ${
+							pathname === "/aut/login" ? "active" : ""
+						}`}
 						onClick={() => setSidebarOpen(false)}>
 						Log in
 					</Link>
 					<Link
 						href='/aut/signup'
-						className={`hover:underline ${pathname === '/aut/signup'? 'active' : ''}`}
+						className={`hover:underline ${
+							pathname === "/aut/signup" ? "active" : ""
+						}`}
 						onClick={() => setSidebarOpen(false)}>
 						Sign up
 					</Link>
 					<Link
 						href='/browseitems'
-						className={`hover:underline ${pathname === '/browseitems'? 'active' : ''}`}
+						className={`hover:underline ${
+							pathname === "/browseitems" ? "active" : ""
+						}`}
 						onClick={() => setSidebarOpen(false)}>
 						Browse Items
 					</Link>
