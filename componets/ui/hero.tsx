@@ -1,3 +1,4 @@
+
 import Image from "next/image";
 import Link from "next/link";
 
@@ -28,8 +29,8 @@ export default function Hero() {
 
 				<div className='text-lg mt-8'>
 					<Link
-						href='/browseitem'
-						className='flex items-center justify-center py-3 px-10 rounded-md border bg-gradient-to-r from-calltoaction  to-gray-900 hover:scale-105 transform transition-transform duration-500 ease-in-out hover:scale-105'>
+						href='/browseitems'
+						className='flex items-center justify-center py-3 px-10 rounded-md border bg-gradient-to-r from-calltoaction  to-gray-900 transform transition-transform duration-500 ease-in-out hover:scale-105'>
 						{" "}
 						Browse Itmes
 					</Link>
