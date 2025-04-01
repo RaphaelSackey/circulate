@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Imprima, Patrick_Hand } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/componets/ui/navbar";
-import { ThemeProvider } from "@/componets/theme/themeprovider";
+import Navbar from "@/components/ui/navbar";
+import { ThemeProvider } from "@/components/theme/themeprovider";
 
 const patrick = Patrick_Hand({
 	weight: ["400"],

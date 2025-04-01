@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { usePathname } from "next/navigation";
-import ModeToggle from "./modetoggle";
+import ModeToggle from "../../components/ui/modetoggle";
 
 export default function Navbar() {
 	const [isSidebarOpen, setSidebarOpen] = useState(false);
@@ -45,13 +45,13 @@ export default function Navbar() {
 				<div className='hidden lg:flex flex-row gap-2 items-center'>
 					<div className='flex items-center justify-center gap-1'>
 						<Link
-							href='/aut/login'
+							href='/login'
 							className='hover:underline'>
 							Log in
 						</Link>
 						<div>/</div>
 						<Link
-							href='/aut/signup'
+							href='/signup'
 							className='hover:underline'>
 							Sign up
 						</Link>
@@ -103,17 +103,17 @@ export default function Navbar() {
 						Profile
 					</Link>
 					<Link
-						href='/aut/login'
+						href='/login'
 						className={`hover:underline ${
-							pathname === "/aut/login" ? "active" : ""
+							pathname === "/login" ? "active" : ""
 						}`}
 						onClick={() => setSidebarOpen(false)}>
 						Log in
 					</Link>
 					<Link
-						href='/aut/signup'
+						href='/signup'
 						className={`hover:underline ${
-							pathname === "/aut/signup" ? "active" : ""
+							pathname === "/signup" ? "active" : ""
 						}`}
 						onClick={() => setSidebarOpen(false)}>
 						Sign up

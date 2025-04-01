@@ -1,5 +1,5 @@
 import Image from "next/image";
-import Hero from "@/componets/ui/hero";
+import Hero from "@/components/ui/hero";
 import Howitworks from "./howitworks";
 
 
