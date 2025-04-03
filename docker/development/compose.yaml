@@ -1,0 +1,8 @@
+services:
+  circulateApp:
+    build:
+      context: ../../
+      dockerfile: docker/development/Dockerfile
+    image: circulate:1.0
+    ports:
+      - "3001:3000"
