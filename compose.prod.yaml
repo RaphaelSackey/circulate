@@ -2,7 +2,7 @@ services:
   frontend:
     container_name: frontend
     build: .
-    restart: always #change if you don't want your container restarting
+    restart: always 
     environment:
       - NODE_ENV=production
     ports:

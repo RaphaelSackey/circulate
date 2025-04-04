@@ -2,7 +2,7 @@ services:
     app:
         container_name: circulate-app
         build:
-            context: . #if your Dockerfile is not at the same level change the path here (./frontend)
+            context: . 
             target: dev
         image: circulate-app:latest
         restart: always
