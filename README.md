@@ -1,36 +1,39 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🌍 Circulate – Community Item Borrowing Platform  
 
-## Getting Started
+## ⚙️ Status: Ongoing
+**Current Stage**:
+    - Firebase Auth | User authentication | Google Auth | PostgreSQL sync
 
-First, run the development server:
+Circulate is a **peer-to-peer item borrowing platform** that enables people in close proximity to **lend and borrow items** efficiently. Users can create or join a **community** (such as a dorm, apartment, or neighborhood), making it easier to find and request items nearby.  
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🚀 Features  
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+**User Authentication** – Secure sign-up/sign-in using Firebase Authentication.  
+**Community-Based Borrowing** – Join or create communities for easy access to shared items.  
+**Geolocation-Based Search** – Find available items near you using real-time location data.  
+**Item Management** – List items for lending, request to borrow, and return items when done.  
+**Trust Score System** – Rate and review users to build trust within the community.  
+**Real-Time Messaging** – Communicate with lenders and borrowers directly within the app.  
+**Secure Transactions** – Track borrowing history, return deadlines, and disputes.  
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## 🛠️ Tech Stack  
 
-To learn more about Next.js, take a look at the following resources:
+| Technology | Purpose |
+|------------|---------|
+| **Next.js (App Router)** | Frontend & API routes |
+| **PostgreSQL (PostGIS)** | Primary database & geolocation queries |
+| **Firebase Auth** | User authentication |
+| **Firebase Storage** | Image uploads for user profiles and items |
+| **TailwindCSS** | UI styling |
+| **ElasticSearch** | Fast item search indexing |
+| **Redis** | Caching frequently accessed data |
+| **Zustand/Redux** | Global state management |
+| **Docker** | Deployment & containerization |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-## Deploy on Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.

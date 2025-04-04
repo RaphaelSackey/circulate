@@ -1,0 +1,4 @@
+
+const hasedPassword = (password: string) => {
+    
+}

@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { TsignUp } from "@/types/form/formdata";
 import Link from "next/link";
+import { clientActionSignup } from "@/actions/client/auth/auth_actions";
 
 export default function Signup() {
 	const [formData, setFormdata] = useState<TsignUp>({
@@ -19,6 +20,13 @@ export default function Signup() {
 		const name = e.target.name;
 		setFormdata((prev) => ({ ...prev, [name]: e.target.value }));
 	};
+
+	const handleSubmit = async () => {
+		console.log('signing in ')
+		const response = await clientActionSignup(formData)
+		console.log(response)
+
+	}
 
 	return (
 		<div className='lg:container mx-4 lg:mx-auto h-[90vh] flex flex-col justify-center items-center'>
@@ -104,7 +112,7 @@ export default function Signup() {
 				</span>
 			</h5>
 			<div className='pt-5'>
-				<button className=' text-white text-lg border py-2 px-22 rounded-lg bg-calltoaction'>
+				<button className=' text-white text-lg border py-2 px-22 rounded-lg bg-calltoaction' onClick={handleSubmit}>
 					Sign in
 				</button>
 			</div>
