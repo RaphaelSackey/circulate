@@ -3,6 +3,7 @@ import { serverActionSignup } from "@/actions/server/auth/auth_actions";
 import { TsignUp } from "@/types/form/formdata";
 
 export async function POST(request: NextRequest) {
+	// Testing route
 	const data: TsignUp = await request.json();
 	try {
 		const response = await serverActionSignup (data);

@@ -1,11 +1,12 @@
 import { TsignUp } from "@/types/form/formdata";
 
 export const clientActionSignup = async(data:TsignUp ) =>{
-
+    // Using fetch for  testing, Implement tanstack/react-query !!!
+    
     const response = await fetch('/api/auth/signup', {
-        method: 'POST', // Specify the request method
+        method: 'POST',
         headers: {
-            'Content-Type': 'application/json', // Indicate that you're sending JSON data
+            'Content-Type': 'application/json', 
         },
         body: JSON.stringify(data),
     })
