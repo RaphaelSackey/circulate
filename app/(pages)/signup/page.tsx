@@ -4,6 +4,8 @@ import React, { useState } from "react";
 import { TsignUp } from "@/types/form/formdata";
 import Link from "next/link";
 import { clientActionSignup } from "@/actions/client/auth/auth_actions";
+import { useMutation } from "@tanstack/react-query";
+
 
 export default function Signup() {
 	const [formData, setFormdata] = useState<TsignUp>({
@@ -13,7 +15,16 @@ export default function Signup() {
 		password: "",
 		confirmPassword: "",
 	});
-
+	const {mutate, isPending, isSuccess} = useMutation(
+		{
+			mutationFn: clientActionSignup,
+			onSuccess: (data) => {
+				console.log('yay it worked', data)
+			},
+			onError: (e) => console.log('something went wrong', e)
+		}
+	)
+	
 	const handleFormChange = (
 		e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
 	) => {
@@ -21,11 +32,9 @@ export default function Signup() {
 		setFormdata((prev) => ({ ...prev, [name]: e.target.value }));
 	};
 
-	const handleSubmit = async () => {
-		console.log('signing in ')
-		const response = await clientActionSignup(formData)
-		console.log(response)
-
+	const handleSubmit = () => {
+		mutate(formData)
+		
 	}
 
 	return (

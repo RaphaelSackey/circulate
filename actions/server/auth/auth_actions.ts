@@ -10,13 +10,13 @@ export const serverActionSignup = async (data:TsignUp) => {
     if (password && email){
         try{
             const userCredential = await createUserWithEmailAndPassword(auth, email, password)
-            console.log(userCredential);
+            return userCredential;
         
         }catch(e){
             console.log(e)
+            return e
+            
         }
-    }else{
-
     }
 }
 

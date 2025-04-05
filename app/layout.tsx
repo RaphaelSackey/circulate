@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
-import {Patrick_Hand } from "next/font/google";
+import { Patrick_Hand } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/ui/navbar";
-import { ThemeProvider } from "@/components/theme/themeprovider";
+import { ThemeProvider } from "@/context/themeprovider";
+import TanQueryProvider from "@/context/tanProvider";
 
 const patrick = Patrick_Hand({
 	weight: ["400"],
@@ -20,17 +21,20 @@ export default function RootLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<html lang='en' suppressHydrationWarning>
+		<html
+			lang='en'
+			suppressHydrationWarning>
 			<body className={`${patrick.className}`}>
-      <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-      >
-					<Navbar />
-					{children}
-				</ThemeProvider>
+				<TanQueryProvider>
+					<ThemeProvider
+						attribute='class'
+						defaultTheme='system'
+						enableSystem
+						disableTransitionOnChange>
+						<Navbar />
+						{children}
+					</ThemeProvider>
+				</TanQueryProvider>
 			</body>
 		</html>
 	);
