@@ -1,23 +1,39 @@
-import {createUserWithEmailAndPassword } from "firebase/auth";
-import {auth} from "../../../services/server/firebase/initialize.js"
-import { TsignUp } from "@/types/form/formdata";
+import { adminAuth } from "@/services/server/firebase/admine";
+import { TvalidateToken,  TsessionCookie  } from "@/types/auth/firebaseType";
 
-export const serverActionSignup = async (data:TsignUp) => {
-    // testing this service
-    const email = data.email
-    const password = data.password
-    
-    if (password && email){
-        try{
-            const userCredential = await createUserWithEmailAndPassword(auth, email, password)
-            return userCredential;
-        
-        }catch(e){
-            console.log(e)
-            return e
-            
-        }
+
+export async function FBvalidateToken(token: string):Promise<TvalidateToken> {
+    try{
+        const isValid = await adminAuth.verifyIdToken(token)
+        return {success: true, data:isValid}
+    }catch(e){
+        return {success: false}
     }
 }
+
+export async function FBcreateSessionCookie(token: string): Promise<TsessionCookie> {
+    const numberOfMinutes = 5
+    try{
+        const SessionCookie = await adminAuth.createSessionCookie(token, {
+            expiresIn:  numberOfMinutes * 60 * 1000
+        })
+        return {success: true, data: SessionCookie}
+    }catch(e){
+        return {success: false}
+    }
+}
+
+export async function FBinvalidateRefreshToken(uid: string) {
+    try{
+        await adminAuth.revokeRefreshTokens(uid)
+    }catch(e){
+        console.log(`failed to invalidate Token for ${uid} ${e}`)
+    }
+    
+}
+
+
+
+
 
 
