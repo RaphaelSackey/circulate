@@ -10,11 +10,15 @@ export type TsignUp = {
 	password: string;
 	confirmPassword: string;
 };
+type TsessionResponseData = {
+	success: boolean;
+	message: string;
+	data: string;
+};
 
 export type TsessionCookieResponse =
-	| { status: true; data: any }
+	| { status: true; data: TsessionResponseData }
 	| { status: false; e: unknown };
 
-export type TsignupResponse =
-	| { status: true; data: any }
-	| { status: false; e: unknown }
+
+

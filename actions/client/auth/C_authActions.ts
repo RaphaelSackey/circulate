@@ -4,7 +4,6 @@ import { auth } from "../../../services/client/firebase/initialize";
 import {
 	TsignUp,
 	TsessionCookieResponse,
-	TsignupResponse,
 } from "@/types/client/C_types";
 import { Flashlight } from "lucide-react";
 
@@ -32,7 +31,7 @@ async function getSessionCookie(
 
 export const clientActionSignup = async (
 	data: TsignUp
-): Promise<TsignupResponse> => {
+): Promise<TsessionCookieResponse> => {
 	const email = data.email;
 	const password = data.password;
 

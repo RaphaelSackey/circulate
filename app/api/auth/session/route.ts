@@ -26,7 +26,7 @@ export async function POST(request: NextRequest) {
 					// this will prevent firebase auth from auto refreshing the client idToken
 					FBinvalidateRefreshToken(uid)
 					// if success return a response to the client with the user information
-					return NextResponse.json({success: true, message: 'session created', data: isValid.data}, {status: 200})
+					return NextResponse.json({success: true, message: 'session created', data: isValid.data?.uid}, {status: 200})
 				}else{
 					// if nextjs cookie creation fails return a failed response
 					return NextResponse.json({success: false, message: 'failed to create session', data: undefined}, {status: 500})

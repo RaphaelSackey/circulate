@@ -8,6 +8,7 @@ import { useMutation } from "@tanstack/react-query";
 import { LoaderCircle } from "lucide-react";
 import { validateSigninForm } from "@/actions/client/lib/validateSigninForm";
 import { ErrorAlert } from "@/components/ui/erroralert";
+import { useRouter } from 'next/navigation'
 
 export default function Signup() {
 	const [formData, setFormdata] = useState<TsignUp>({
@@ -17,6 +18,7 @@ export default function Signup() {
 		password: "",
 		confirmPassword: "",
 	});
+	const router = useRouter()
 	const [error, setError] = useState(false);
 	const [errorMessage, setErrorMessage] = useState('');
 	
@@ -26,6 +28,13 @@ export default function Signup() {
 		onSuccess: (data) => {
 			if(!data.status){
 				handleError(data.e as string)
+			}else{
+				if(!data.data.success){
+					handleError(data.data.message)
+				}else{
+					console.log(data.data.data)
+					router.push('/')
+				}	
 			}
 		},
 		onError: (e) => console.log("something went wrong", e),
