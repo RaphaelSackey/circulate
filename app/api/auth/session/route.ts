@@ -8,7 +8,6 @@ type Tdata = {
 }
 
 export async function POST(request: NextRequest) {
-	console.log('im ')
 	const data: Tdata = await request.json();
 	const token = data.token
 	const uid = data.uid

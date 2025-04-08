@@ -1,14 +1,13 @@
-'use client'
+"use client";
 
-import { TlogIn } from "@/types/form/formdata";
-import React, {useState} from "react";
+import { TlogIn } from "@/types/client/C_types";
+import React, { useState } from "react";
 import Link from "next/link";
 
 export default function Login() {
 	const [formData, setFormdata] = useState<TlogIn>({
 		email: "",
 		password: "",
-
 	});
 
 	const handleFormChange = (

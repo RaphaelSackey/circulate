@@ -1,5 +1,5 @@
 import { adminAuth } from "@/services/server/firebase/admine";
-import { TvalidateToken,  TsessionCookie  } from "@/types/auth/firebaseType";
+import { TvalidateToken,  TsessionCookie  } from "@/types/server/S_types";
 
 
 export async function FBvalidateToken(token: string):Promise<TvalidateToken> {

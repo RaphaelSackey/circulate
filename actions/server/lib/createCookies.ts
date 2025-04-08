@@ -9,7 +9,6 @@ export async function createCookie(firebaseSessionCookie: string) {
 			httpOnly: true,
 			path: "/",
 		});
-
 		return true;
 	} catch (e) {
 		return false;
