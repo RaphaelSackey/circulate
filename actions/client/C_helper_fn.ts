@@ -1,4 +1,4 @@
-import { TsignUp } from "@/types/client/C_types";
+import { TsignUp } from "@/types/C_types";
 
 export function validateSigninForm(data: TsignUp) {
 	// check if passwords match

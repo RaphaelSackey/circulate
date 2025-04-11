@@ -10,6 +10,7 @@ export type TsignUp = {
 	password: string;
 	confirmPassword: string;
 };
+
 type TsessionResponseData = {
 	success: boolean;
 	message: string;
@@ -21,4 +22,14 @@ export type TsessionCookieResponse =
 	| { status: false; e: unknown };
 
 
+export type TcheckSignIn ={
+	status: boolean,
+	uid: string,
+}
+
+export type TrequestSessionData ={
+	success: boolean, 
+	message: string, 
+	data: string,
+}
 

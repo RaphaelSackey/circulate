@@ -1,14 +1,14 @@
 "use client";
 
 import React, { useState } from "react";
-import { TsignUp } from "@/types/client/C_types";
+import { TsignUp, TsessionCookieResponse } from "@/types/C_types";
 import Link from "next/link";
-import { clientActionSignup } from "@/actions/client/auth/C_authActions";
+import { clientActionSignup } from "@/actions/client/C_auth_actions";
 import { useMutation } from "@tanstack/react-query";
 import { LoaderCircle } from "lucide-react";
-import { validateSigninForm } from "@/actions/client/lib/validateSigninForm";
+import { validateSigninForm } from "@/actions/client/C_helper_fn";
 import { ErrorAlert } from "@/components/ui/erroralert";
-import { useRouter } from 'next/navigation'
+import { useRouter } from "next/navigation";
 
 export default function Signup() {
 	const [formData, setFormdata] = useState<TsignUp>({
@@ -18,45 +18,47 @@ export default function Signup() {
 		password: "",
 		confirmPassword: "",
 	});
-	const router = useRouter()
-	const [error, setError] = useState(false);
-	const [errorMessage, setErrorMessage] = useState('');
-	
+	const router = useRouter();
+	const [error, setError] = useState<boolean>(false);
+	const [errorMessage, setErrorMessage] = useState<string>("");
 
+	// mutation to sign up client
 	const { mutate, isPending } = useMutation({
 		mutationFn: clientActionSignup,
-		onSuccess: (data) => {
-			if(!data.status){
-				handleError(data.e as string)
-			}else{
-				if(!data.data.success){
-					handleError(data.data.message)
-				}else{
-					console.log(data.data.data)
-					router.push('/')
-				}	
+		onSuccess: (data: TsessionCookieResponse) => {
+			if (!data.status) {
+				handleError(data.e as string);
+			} else {
+				if (!data.data.success) {
+					handleError(data.data.message);
+				} else {
+					console.log(data.data.data);
+					router.push("/");
+				}
 			}
 		},
 		onError: (e) => console.log("something went wrong", e),
 	});
 
+	// handle form change
 	const handleFormChange = (
 		e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
 	) => {
 		const name = e.target.name;
 		setFormdata((prev) => ({ ...prev, [name]: e.target.value }));
 	};
-	const handleError = (message:string) => {
-		setErrorMessage(message)
+	const handleError = (message: string): void => {
+		setErrorMessage(message);
 		setError(true);
-		
-		setTimeout(() => setError(false), 5000);
-	}
 
+		setTimeout(() => setError(false), 5000);
+	};
+
+	// handle user sign up
 	const handleSubmit = () => {
 		const goodForm = validateSigninForm(formData);
 		if (!goodForm) {
-			handleError('Passwords do not match')
+			handleError("Passwords do not match");
 		} else {
 			mutate(formData);
 		}
@@ -64,7 +66,7 @@ export default function Signup() {
 
 	return (
 		<div className='lg:container mx-4 lg:mx-auto h-[90vh] flex flex-col justify-center items-center'>
-			{error && <ErrorAlert message= {errorMessage} />}
+			{error && <ErrorAlert message={errorMessage} />}
 			<h1 className='md:hidden text-4xl font-extrabold mb-10 text-balance'>
 				Sign In
 			</h1>
