@@ -16,5 +16,31 @@ services:
             - /app/.next
         ports:
             - 3000:3000
+    db:
+        image: postgis/postgis
+        restart: always
+        ports: 
+            - "5432:5432"
+        environment:
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: mypassword
+            POSTGRES_DB: postgres # default database
+        volumes:
+            - pg_data:/var/lib/postgresql/data
+    pgadmin4:
+        image: dpage/pgadmin4
+        restart: always
+        ports:
+            - "8080:80"
+        environment:
+            PGADMIN_DEFAULT_EMAIL: user@domain.com
+            PGADMIN_DEFAULT_PASSWORD: supersecred
+        volumes:
+            - pgadmin_data:/var/lib/pgadmin
+
+volumes:
+    pg_data:
+    pgadmin_data:
+
 
 # run : docker compose up --build

@@ -82,7 +82,7 @@ export default function Login() {
 					{" "}
 					Password{" "}
 				</label>
-				<input
+				<inputw
 					type='password'
 					id='password'
 					name='password'
