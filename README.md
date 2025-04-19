@@ -2,7 +2,7 @@
 
 ## ⚙️ Status: Ongoing
 **Current Stage**:
-    - Firebase Auth | User authentication | Google Auth | PostgreSQL sync
+    - Browse Items UI and search functionality 
 
 Circulate is a **peer-to-peer item borrowing platform** that enables people in close proximity to **lend and borrow items** efficiently. Users can create or join a **community** (such as a dorm, apartment, or neighborhood), making it easier to find and request items nearby.  
 
