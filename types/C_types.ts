@@ -40,3 +40,18 @@ export type TitemCard = {
 	distance: string,
 	status: 'Available' | 'Unavailable'
 }
+
+export type TitemCategoryLabel =
+	| "Electronics"
+	| "Tools"
+	| "Education"
+	| "Appliances"
+	| "Sports & Fitness"
+	| "Clothing & Wearables"
+	| "Home & Furniture"
+	| "Books & Media"
+	| "Outdoor & Garden"
+	| "Toys & Games"
+	| "Art & Crafts"
+	| "Musical Instruments"
+	| "Bikes & Mobility";
