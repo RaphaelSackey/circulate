@@ -118,16 +118,62 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
 });
 
 exports.Prisma.UserScalarFieldEnum = {
-  id: 'id',
+  uid: 'uid',
   name: 'name',
-  email: 'email'
+  profilePicture: 'profilePicture',
+  latitude: 'latitude',
+  longitude: 'longitude',
+  trustScore: 'trustScore',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
-exports.Prisma.ItemsScalarFieldEnum = {
+exports.Prisma.ItemScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  description: 'description',
+  imageUrl: 'imageUrl',
+  status: 'status',
+  latitude: 'latitude',
+  longitude: 'longitude',
+  ownerId: 'ownerId',
+  communityId: 'communityId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.CommunityScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  latitude: 'latitude',
+  longitude: 'longitude',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.UserCommunityScalarFieldEnum = {
+  userId: 'userId',
+  communityId: 'communityId',
+  role: 'role'
+};
+
+exports.Prisma.BorrowScalarFieldEnum = {
+  id: 'id',
+  borrowerId: 'borrowerId',
+  ownerId: 'ownerId',
+  itemId: 'itemId',
+  status: 'status',
+  requestedAt: 'requestedAt',
+  approvedAt: 'approvedAt',
+  borrowedAt: 'borrowedAt',
+  returnedAt: 'returnedAt'
+};
+
+exports.Prisma.TrustLogScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
-  latitude: 'latitude',
-  longitude: 'longitude'
+  scoreChange: 'scoreChange',
+  reason: 'reason',
+  createdAt: 'createdAt'
 };
 
 exports.Prisma.SortOrder = {
@@ -140,10 +186,37 @@ exports.Prisma.QueryMode = {
   insensitive: 'insensitive'
 };
 
+exports.Prisma.NullsOrder = {
+  first: 'first',
+  last: 'last'
+};
+exports.ItemStatus = exports.$Enums.ItemStatus = {
+  AVAILABLE: 'AVAILABLE',
+  PENDING: 'PENDING',
+  BORROWED: 'BORROWED',
+  RETURNED: 'RETURNED'
+};
+
+exports.UserRole = exports.$Enums.UserRole = {
+  ADMIN: 'ADMIN',
+  MEMBER: 'MEMBER'
+};
+
+exports.BorrowStatus = exports.$Enums.BorrowStatus = {
+  REQUESTED: 'REQUESTED',
+  APPROVED: 'APPROVED',
+  BORROWED: 'BORROWED',
+  RETURNED: 'RETURNED',
+  CANCELLED: 'CANCELLED'
+};
 
 exports.Prisma.ModelName = {
   User: 'User',
-  Items: 'Items'
+  Item: 'Item',
+  Community: 'Community',
+  UserCommunity: 'UserCommunity',
+  Borrow: 'Borrow',
+  TrustLog: 'TrustLog'
 };
 
 /**

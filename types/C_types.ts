@@ -33,3 +33,10 @@ export type TrequestSessionData ={
 	data: string,
 }
 
+export type TitemCard = {
+	imgUrl: string,
+	name: string,
+	description: string,
+	distance: string,
+	status: 'Available' | 'Unavailable'
+}

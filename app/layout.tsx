@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "@/components/ui/navbar";
 import { ThemeProvider } from "@/context/themeprovider";
 import TanQueryProvider from "@/context/tanProvider";
+import { LocationContextProvider } from "@/context/location";
 
 const patrick = Patrick_Hand({
 	weight: ["400"],
@@ -31,8 +32,10 @@ export default function RootLayout({
 						defaultTheme='system'
 						enableSystem
 						disableTransitionOnChange>
-						<Navbar />
-						{children}
+						<LocationContextProvider>
+							<Navbar />
+							{children}
+						</LocationContextProvider>
 					</ThemeProvider>
 				</TanQueryProvider>
 			</body>

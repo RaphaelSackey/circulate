@@ -5,8 +5,9 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client-js"
-  output   = "../generated/prisma"
+  provider      = "prisma-client-js"
+  output        = "../generated/prisma"
+  binaryTargets = ["native", "linux-musl-arm64-openssl-3.0.x"]
 }
 
 datasource db {
@@ -15,16 +16,104 @@ datasource db {
 }
 
 model User {
-  id    Int     @id @default(autoincrement())
-  name  String
-  email String  @unique
-  items Items[]
+  uid             String          @id // Firebase UID
+  name            String?
+  profilePicture  String?
+  latitude        Float?
+  longitude       Float?
+  trustScore      Float           @default(5.0)
+  items           Item[]
+  borrowings      Borrow[]        @relation("BorrowerRelation")
+  lendings        Borrow[]        @relation("OwnerRelation")
+  userCommunities UserCommunity[]
+  trustLogs       TrustLog[]
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
 }
 
-model Items {
-  id        Int   @id @default(autoincrement())
-  userId    Int
+model Item {
+  id          Int        @id @default(autoincrement())
+  name        String
+  description String?
+  imageUrl    String?
+  status      ItemStatus @default(AVAILABLE)
+  latitude    Float
+  longitude   Float
+  ownerId     String
+  owner       User       @relation(fields: [ownerId], references: [uid])
+  communityId Int?
+  community   Community? @relation(fields: [communityId], references: [id])
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  // Corrected relation from Borrow model
+  borrowRecords Borrow[] @relation("ItemBorrows")
+}
+
+enum ItemStatus {
+  AVAILABLE
+  PENDING
+  BORROWED
+  RETURNED
+}
+
+model Community {
+  id        Int             @id @default(autoincrement())
+  name      String          @unique
   latitude  Float
   longitude Float
-  user      User  @relation(fields: [userId], references: [id])
+  items     Item[]
+  members   UserCommunity[]
+  createdAt DateTime        @default(now())
+}
+
+model UserCommunity {
+  userId      String
+  communityId Int
+  role        UserRole @default(MEMBER)
+
+  user      User      @relation(fields: [userId], references: [uid])
+  community Community @relation(fields: [communityId], references: [id])
+
+  @@id([userId, communityId])
+}
+
+enum UserRole {
+  ADMIN
+  MEMBER
+}
+
+model Borrow {
+  id         Int          @id @default(autoincrement())
+  borrowerId String
+  ownerId    String
+  itemId     Int
+  status     BorrowStatus @default(REQUESTED)
+
+  borrower User @relation("BorrowerRelation", fields: [borrowerId], references: [uid])
+  owner    User @relation("OwnerRelation", fields: [ownerId], references: [uid])
+  item     Item @relation("ItemBorrows", fields: [itemId], references: [id])
+
+  requestedAt DateTime  @default(now())
+  approvedAt  DateTime?
+  borrowedAt  DateTime?
+  returnedAt  DateTime?
+}
+
+enum BorrowStatus {
+  REQUESTED
+  APPROVED
+  BORROWED
+  RETURNED
+  CANCELLED
+}
+
+model TrustLog {
+  id          Int      @id @default(autoincrement())
+  userId      String
+  scoreChange Float
+  reason      String
+  createdAt   DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [uid])
 }

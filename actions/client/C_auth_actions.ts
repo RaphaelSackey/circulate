@@ -1,8 +1,17 @@
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import {
+	createUserWithEmailAndPassword,
+	deleteUser,
+	signInWithEmailAndPassword,
+} from "firebase/auth";
 import { FirebaseError } from "firebase/app";
 import { auth } from "../../services/client/C_firebase";
-import { TsignUp, TsessionCookieResponse, TcheckSignIn, TlogIn, TrequestSessionData} from "@/types/C_types";
-
+import {
+	TsignUp,
+	TsessionCookieResponse,
+	TcheckSignIn,
+	TlogIn,
+	TrequestSessionData,
+} from "@/types/C_types";
 
 // request a cookie from the server
 async function getSessionCookie(
@@ -18,7 +27,7 @@ async function getSessionCookie(
 				uid: uid,
 			}),
 		});
-		const data:TrequestSessionData = await response.json();
+		const data: TrequestSessionData = await response.json();
 		return { status: true, data };
 	} catch (e) {
 		return { status: false, e: "Server error" };
@@ -41,7 +50,17 @@ export const clientActionSignup = async (
 		const token = await userCredential.user.getIdToken();
 		const uid = userCredential.user.uid;
 
-		return await getSessionCookie(token, uid);
+		const isSignedup = await clientSignupOnServer(uid);
+
+		if (!isSignedup.success) {
+			const user = auth.currentUser;
+			if (user) {
+				await deleteUser(user);
+			}
+			return { status: false, e: "failed to sign up" };
+		} else {
+			return await getSessionCookie(token, uid);
+		}
 	} catch (e) {
 		if (e instanceof FirebaseError) {
 			const trimmedMessage = e.message
@@ -55,15 +74,20 @@ export const clientActionSignup = async (
 };
 
 // log in user
-export async function clientLogin(data: TlogIn): Promise<TsessionCookieResponse>{
-	try{
-		const userCredential = await signInWithEmailAndPassword(auth, data.email, data.password)
+export async function clientLogin(
+	data: TlogIn
+): Promise<TsessionCookieResponse> {
+	try {
+		const userCredential = await signInWithEmailAndPassword(
+			auth,
+			data.email,
+			data.password
+		);
 		const token = await userCredential.user.getIdToken();
 		const uid = userCredential.user.uid;
 
 		return await getSessionCookie(token, uid);
-
-	}catch (e) {
+	} catch (e) {
 		if (e instanceof FirebaseError) {
 			const trimmedMessage = e.message
 				.replace(/^Firebase:\s*/, "")
@@ -75,44 +99,59 @@ export async function clientLogin(data: TlogIn): Promise<TsessionCookieResponse>
 	}
 }
 
-
-
-export async function checkSignin():Promise<TcheckSignIn >{
-	try{
-		const response = await fetch('/api/auth/checksignedin',{
-			method: 'GET',
+export async function checkSignin(): Promise<TcheckSignIn> {
+	try {
+		const response = await fetch("/api/auth/checksignedin", {
+			method: "GET",
 			headers: { "Content-Type": "application/json" },
-		})
+		});
 
-		if (!response.ok){
-			throw new Error('user not logged in')
+		if (!response.ok) {
+			throw new Error("user not logged in");
 		}
-		
-		const uid = await response.json()
-		return {status: true, uid}
 
-		
-	}catch(e){
-		throw e
+		const uid = await response.json();
+		return { status: true, uid };
+	} catch (e) {
+		throw e;
 	}
-	
-
 }
 
-export async function signOut():Promise<{status:boolean}>{
+export async function signOut(): Promise<{ status: boolean }> {
 	try {
-		const response = await fetch('/api/auth/session',{
-			method: 'GET',
+		const response = await fetch("/api/auth/session", {
+			method: "GET",
 			headers: { "Content-Type": "application/json" },
-		})
+		});
 
-		if (!response.ok){
-			return {status: false}
+		if (!response.ok) {
+			return { status: false };
 		}
 
-		return {status: true}
-	
-	}catch(e){
-		throw e
+		return { status: true };
+	} catch (e) {
+		throw e;
+	}
+}
+
+export async function clientSignupOnServer(
+	uid: string
+): Promise<{ success: boolean }> {
+	try {
+		const response = await fetch("/api/auth/signup", {
+			method: "POST",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify({
+				uid: uid,
+			}),
+		});
+
+		if (!response.ok) {
+			return { success: false };
+		}
+
+		return { success: true };
+	} catch (e) {
+		return { success: false };
 	}
 }

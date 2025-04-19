@@ -1,5 +1,6 @@
 import { adminAuth } from "@/services/server/S_firebase";
 import { TvalidateToken, TsessionCookie } from "@/types/S_types";
+import { prisma } from "@/services/server/S_postgress";
 
 export async function FBvalidateToken(token: string): Promise<TvalidateToken> {
 	try {
@@ -20,7 +21,6 @@ export async function FBcreateSessionCookie(
 		});
 		return { success: true, data: SessionCookie };
 	} catch (e) {
-        console.log('failing here')
 		return { success: false };
 	}
 }
@@ -32,14 +32,27 @@ export async function FBinvalidateRefreshToken(uid: string): Promise<void> {
 		console.log(`failed to invalidate Token for ${uid} ${e}`);
 	}
 }
-export async function FBvalidateSessionCookie(Cookie: string): Promise<TvalidateToken> {
+export async function FBvalidateSessionCookie(
+	Cookie: string
+): Promise<TvalidateToken> {
 	try {
 		const isValid = await adminAuth.verifySessionCookie(Cookie);
-        return { success: true, data: isValid };
+		return { success: true, data: isValid };
 	} catch (e) {
 		return { success: false };
 	}
 }
 
+export async function PGaddNewUser(id: string): Promise<boolean> {
+	try {
+		const user = await prisma.user.create({
+			data: {
+				uid: id,
+			},
+		});
 
-
+		return true;
+	} catch (e) {
+		return false;
+	}
+}
