@@ -25,7 +25,7 @@ export default function BrowseItems() {
 			<div className='flex justify-end items-center gap-2 mt-6'>
                 <DropdownMenuCheckboxes toggleItem = {toggleItem } selectedFilterItems = {selectedFilterItems}/>
 				<Link
-					href='/postitem'
+					href='/browseitems/postitems'
 					className='bg-blue-600 rounded-sm px-2 py-1 text-lg'>
 					Post Item
 				</Link>

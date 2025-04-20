@@ -59,10 +59,16 @@ export default function Navbar() {
 							Home
 						</Link>
 						<Link
+							href='/community'
+							className='hover:underline'>
+							Community
+						</Link>
+						<Link
 							href='/profile'
 							className='hover:underline'>
 							Profile
 						</Link>
+						
 					</div>
 				</div>
 
@@ -127,6 +133,14 @@ export default function Navbar() {
 						Home
 					</Link>
 					<Link
+						href='/community'
+						className={!isPending && isSuccess? 'hidden' :`hover:underline ${
+							pathname === "/community" ? "active" : ""
+						}`}
+						onClick={() => setSidebarOpen(false)}>
+						Community
+					</Link>
+					<Link
 						href='/profile'
 						className={`hover:underline ${
 							pathname === "/profile" ? "active" : ""
@@ -142,6 +156,7 @@ export default function Navbar() {
 						onClick={() => setSidebarOpen(false)}>
 						Log in
 					</Link>
+					
 					<Link
 						href='/signup'
 						className={!isPending && isSuccess? 'hidden' : `hover:underline ${

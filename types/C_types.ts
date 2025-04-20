@@ -55,3 +55,10 @@ export type TitemCategoryLabel =
 	| "Art & Crafts"
 	| "Musical Instruments"
 	| "Bikes & Mobility";
+
+
+export type TaddItmes = {
+	name: string,
+	description: string,
+	location?: [string,string]
+}
