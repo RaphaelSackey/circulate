@@ -133,6 +133,14 @@ export default function Navbar() {
 						Home
 					</Link>
 					<Link
+						href='/browseitems'
+						className={`hover:underline ${
+							pathname === "/browseitems" ? "active" : ""
+						}`}
+						onClick={() => setSidebarOpen(false)}>
+						Browse Items
+					</Link>
+					<Link
 						href='/community'
 						className={!isPending && isSuccess? 'hidden' :`hover:underline ${
 							pathname === "/community" ? "active" : ""
@@ -176,14 +184,7 @@ export default function Navbar() {
 							}}>
 						Sign out
 					</Link>
-					<Link
-						href='/browseitems'
-						className={`hover:underline ${
-							pathname === "/browseitems" ? "active" : ""
-						}`}
-						onClick={() => setSidebarOpen(false)}>
-						Browse Items
-					</Link>
+					
 				</div>
 			</div>
 

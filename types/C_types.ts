@@ -60,5 +60,16 @@ export type TitemCategoryLabel =
 export type TaddItmes = {
 	name: string,
 	description: string,
-	location?: [string,string]
+	location: [string?,string?]
+}
+export type TaddItmesfnArg = {
+	data: TaddItmes,
+	images: string[]
+}
+
+
+
+export type TaddItmesFnReturn = {
+	success: boolean,
+	message: string
 }

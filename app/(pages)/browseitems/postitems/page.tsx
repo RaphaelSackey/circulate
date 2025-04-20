@@ -1,17 +1,34 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import MyDropzone from "@/components/ui/imagedropzone";
 import { TaddItmes } from "@/types/C_types";
+import { useMutation } from "@tanstack/react-query";
+import { addNewItem } from "@/actions/client/C_data_interractions_actions";
+import { ErrorAlert } from "@/components/ui/erroralert";
+import { useLocation } from "@/context/location";
 
 export default function PostItems() {
 	const [formData, setFromData] = useState<TaddItmes>({
 		name: "",
 		description: "",
+		location: [],
 	});
 
 	const [images, setImages] = useState<Array<string>>([]);
+	const [alertMessage, setAlertMessage] = useState("");
+	const [showAlert, setShowAlert] = useState(false);
+	const location = useLocation()
+	console.log(location)
 
+	// set the location data for the formdata
+	useEffect(()=>{
+		if (location !== null){
+			setFromData(prev => ({...prev, location: [String(location.latitude), String(location.longitude)]}))
+		}
+	}, [location])
+
+	// update the form data 
 	const handleFormChange = (
 		e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
 	) => {
@@ -19,12 +36,44 @@ export default function PostItems() {
 		setFromData((prev) => ({ ...prev, [name]: e.target.value }));
 	};
 
+	// update the image array to contain attached images 
 	const handleImageUpload = (image: string[]) => {
 		setImages((prev) => [...prev, ...image]);
 	};
 
+	// addItemMutation definition
+	const addItemMutation = useMutation({
+		mutationFn: addNewItem,
+		onError: (e) => {handleAlert('Failed to add item')},
+		onSuccess: (data) => {
+			
+		},
+	});
+
+	// control the alert ui 
+	const handleAlert = (e:string) => {
+		setAlertMessage(e)
+		setShowAlert(true)
+		setTimeout(() => {
+			setShowAlert(false)
+		}, 5000)
+	}
+
+	// function to invoke addItemMutation
+	function handleAddItem() {
+		
+		if (images.length === 0) {
+			handleAlert('Must have at least one image attached')
+		} else if (formData.location.length == 0){
+			handleAlert('Location access is needed to post an item')
+		}
+		else {
+			addItemMutation.mutate({data:formData, images});
+		}
+	}
 	return (
-		<div className='flex flex-col justify-center items-center'>
+		<div className='container mx-auto flex flex-col justify-center items-center'>
+			{ showAlert && <ErrorAlert message={alertMessage} />}{" "}
 			<div className='text-4xl mb-5 text-center'>
 				Share With Community
 			</div>
@@ -59,7 +108,8 @@ export default function PostItems() {
 					handleImageUpload={handleImageUpload}
 					imageCount={images.length}
 				/>
-				<button className='bg-blue-600 mt-2 rounded hover:cursor-pointer hover:opacity-85 h-8'>
+				<button className='bg-blue-600 mt-2 rounded hover:cursor-pointer hover:opacity-85 h-8'
+				onClick={(e) => {e.preventDefault();handleAddItem()}}>
 					Post Item
 				</button>
 			</form>

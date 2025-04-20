@@ -11,7 +11,7 @@ export default function BrowseItems() {
 	const [searchWord, setSearchWord] = useState("");
     const [selectedFilterItems, setSelectedFilterItems] = useState<string[]>([]);
 
-    console.log(selectedFilterItems)
+    // console.log(selectedFilterItems)
 	const toggleItem = (value: string) => {
 		setSelectedFilterItems((prev) =>
 			prev.includes(value)
