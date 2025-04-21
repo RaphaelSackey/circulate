@@ -1,6 +1,7 @@
 import { initializeApp, getApps, cert, type ServiceAccount} from "firebase-admin/app";
 import { getAuth} from "firebase-admin/auth"
 import { getFirestore } from "firebase-admin/firestore";
+import { getStorage } from "firebase-admin/storage";
 
 const serviceAccount: ServiceAccount = {
 	projectId: process.env.PROJECT_ID,
@@ -12,6 +13,7 @@ function initializeFirebaseAdmin() {
 	if (getApps().length === 0) {
 		initializeApp({
 			credential: cert(serviceAccount),
+			storageBucket: 'circulate-2c614.firebasestorage.app'
 		});
 	}
 }
@@ -20,5 +22,7 @@ initializeFirebaseAdmin()
 
 const adminAuth = getAuth();
 const firestore = getFirestore();
+const storageBucket = getStorage().bucket()
 
-export { adminAuth, firestore};
+
+export { adminAuth, firestore, storageBucket};

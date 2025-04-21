@@ -142,9 +142,9 @@ export default function Navbar() {
 					</Link>
 					<Link
 						href='/community'
-						className={!isPending && isSuccess? 'hidden' :`hover:underline ${
+						className={
 							pathname === "/community" ? "active" : ""
-						}`}
+						}
 						onClick={() => setSidebarOpen(false)}>
 						Community
 					</Link>

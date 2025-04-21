@@ -2800,7 +2800,6 @@ export namespace Prisma {
     id: number | null
     name: string | null
     description: string | null
-    imageUrl: string | null
     status: $Enums.ItemStatus | null
     latitude: number | null
     longitude: number | null
@@ -2814,7 +2813,6 @@ export namespace Prisma {
     id: number | null
     name: string | null
     description: string | null
-    imageUrl: string | null
     status: $Enums.ItemStatus | null
     latitude: number | null
     longitude: number | null
@@ -2858,7 +2856,6 @@ export namespace Prisma {
     id?: true
     name?: true
     description?: true
-    imageUrl?: true
     status?: true
     latitude?: true
     longitude?: true
@@ -2872,7 +2869,6 @@ export namespace Prisma {
     id?: true
     name?: true
     description?: true
-    imageUrl?: true
     status?: true
     latitude?: true
     longitude?: true
@@ -2987,7 +2983,7 @@ export namespace Prisma {
     id: number
     name: string
     description: string | null
-    imageUrl: string | null
+    imageUrl: string[]
     status: $Enums.ItemStatus
     latitude: number
     longitude: number
@@ -3107,7 +3103,7 @@ export namespace Prisma {
       id: number
       name: string
       description: string | null
-      imageUrl: string | null
+      imageUrl: string[]
       status: $Enums.ItemStatus
       latitude: number
       longitude: number
@@ -3544,7 +3540,7 @@ export namespace Prisma {
     readonly id: FieldRef<"Item", 'Int'>
     readonly name: FieldRef<"Item", 'String'>
     readonly description: FieldRef<"Item", 'String'>
-    readonly imageUrl: FieldRef<"Item", 'String'>
+    readonly imageUrl: FieldRef<"Item", 'String[]'>
     readonly status: FieldRef<"Item", 'ItemStatus'>
     readonly latitude: FieldRef<"Item", 'Float'>
     readonly longitude: FieldRef<"Item", 'Float'>
@@ -8795,7 +8791,7 @@ export namespace Prisma {
     id?: IntFilter<"Item"> | number
     name?: StringFilter<"Item"> | string
     description?: StringNullableFilter<"Item"> | string | null
-    imageUrl?: StringNullableFilter<"Item"> | string | null
+    imageUrl?: StringNullableListFilter<"Item">
     status?: EnumItemStatusFilter<"Item"> | $Enums.ItemStatus
     latitude?: FloatFilter<"Item"> | number
     longitude?: FloatFilter<"Item"> | number
@@ -8812,7 +8808,7 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     description?: SortOrderInput | SortOrder
-    imageUrl?: SortOrderInput | SortOrder
+    imageUrl?: SortOrder
     status?: SortOrder
     latitude?: SortOrder
     longitude?: SortOrder
@@ -8832,7 +8828,7 @@ export namespace Prisma {
     NOT?: ItemWhereInput | ItemWhereInput[]
     name?: StringFilter<"Item"> | string
     description?: StringNullableFilter<"Item"> | string | null
-    imageUrl?: StringNullableFilter<"Item"> | string | null
+    imageUrl?: StringNullableListFilter<"Item">
     status?: EnumItemStatusFilter<"Item"> | $Enums.ItemStatus
     latitude?: FloatFilter<"Item"> | number
     longitude?: FloatFilter<"Item"> | number
@@ -8849,7 +8845,7 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     description?: SortOrderInput | SortOrder
-    imageUrl?: SortOrderInput | SortOrder
+    imageUrl?: SortOrder
     status?: SortOrder
     latitude?: SortOrder
     longitude?: SortOrder
@@ -8871,7 +8867,7 @@ export namespace Prisma {
     id?: IntWithAggregatesFilter<"Item"> | number
     name?: StringWithAggregatesFilter<"Item"> | string
     description?: StringNullableWithAggregatesFilter<"Item"> | string | null
-    imageUrl?: StringNullableWithAggregatesFilter<"Item"> | string | null
+    imageUrl?: StringNullableListFilter<"Item">
     status?: EnumItemStatusWithAggregatesFilter<"Item"> | $Enums.ItemStatus
     latitude?: FloatWithAggregatesFilter<"Item"> | number
     longitude?: FloatWithAggregatesFilter<"Item"> | number
@@ -9232,7 +9228,7 @@ export namespace Prisma {
   export type ItemCreateInput = {
     name: string
     description?: string | null
-    imageUrl?: string | null
+    imageUrl?: ItemCreateimageUrlInput | string[]
     status?: $Enums.ItemStatus
     latitude: number
     longitude: number
@@ -9247,7 +9243,7 @@ export namespace Prisma {
     id?: number
     name: string
     description?: string | null
-    imageUrl?: string | null
+    imageUrl?: ItemCreateimageUrlInput | string[]
     status?: $Enums.ItemStatus
     latitude: number
     longitude: number
@@ -9261,7 +9257,7 @@ export namespace Prisma {
   export type ItemUpdateInput = {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    imageUrl?: ItemUpdateimageUrlInput | string[]
     status?: EnumItemStatusFieldUpdateOperationsInput | $Enums.ItemStatus
     latitude?: FloatFieldUpdateOperationsInput | number
     longitude?: FloatFieldUpdateOperationsInput | number
@@ -9276,7 +9272,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    imageUrl?: ItemUpdateimageUrlInput | string[]
     status?: EnumItemStatusFieldUpdateOperationsInput | $Enums.ItemStatus
     latitude?: FloatFieldUpdateOperationsInput | number
     longitude?: FloatFieldUpdateOperationsInput | number
@@ -9291,7 +9287,7 @@ export namespace Prisma {
     id?: number
     name: string
     description?: string | null
-    imageUrl?: string | null
+    imageUrl?: ItemCreateimageUrlInput | string[]
     status?: $Enums.ItemStatus
     latitude: number
     longitude: number
@@ -9304,7 +9300,7 @@ export namespace Prisma {
   export type ItemUpdateManyMutationInput = {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    imageUrl?: ItemUpdateimageUrlInput | string[]
     status?: EnumItemStatusFieldUpdateOperationsInput | $Enums.ItemStatus
     latitude?: FloatFieldUpdateOperationsInput | number
     longitude?: FloatFieldUpdateOperationsInput | number
@@ -9316,7 +9312,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    imageUrl?: ItemUpdateimageUrlInput | string[]
     status?: EnumItemStatusFieldUpdateOperationsInput | $Enums.ItemStatus
     latitude?: FloatFieldUpdateOperationsInput | number
     longitude?: FloatFieldUpdateOperationsInput | number
@@ -9803,6 +9799,14 @@ export namespace Prisma {
     not?: NestedIntFilter<$PrismaModel> | number
   }
 
+  export type StringNullableListFilter<$PrismaModel = never> = {
+    equals?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    has?: string | StringFieldRefInput<$PrismaModel> | null
+    hasEvery?: string[] | ListStringFieldRefInput<$PrismaModel>
+    hasSome?: string[] | ListStringFieldRefInput<$PrismaModel>
+    isEmpty?: boolean
+  }
+
   export type EnumItemStatusFilter<$PrismaModel = never> = {
     equals?: $Enums.ItemStatus | EnumItemStatusFieldRefInput<$PrismaModel>
     in?: $Enums.ItemStatus[] | ListEnumItemStatusFieldRefInput<$PrismaModel>
@@ -9856,7 +9860,6 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     description?: SortOrder
-    imageUrl?: SortOrder
     status?: SortOrder
     latitude?: SortOrder
     longitude?: SortOrder
@@ -9870,7 +9873,6 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     description?: SortOrder
-    imageUrl?: SortOrder
     status?: SortOrder
     latitude?: SortOrder
     longitude?: SortOrder
@@ -10383,6 +10385,10 @@ export namespace Prisma {
     deleteMany?: TrustLogScalarWhereInput | TrustLogScalarWhereInput[]
   }
 
+  export type ItemCreateimageUrlInput = {
+    set: string[]
+  }
+
   export type UserCreateNestedOneWithoutItemsInput = {
     create?: XOR<UserCreateWithoutItemsInput, UserUncheckedCreateWithoutItemsInput>
     connectOrCreate?: UserCreateOrConnectWithoutItemsInput
@@ -10407,6 +10413,11 @@ export namespace Prisma {
     connectOrCreate?: BorrowCreateOrConnectWithoutItemInput | BorrowCreateOrConnectWithoutItemInput[]
     createMany?: BorrowCreateManyItemInputEnvelope
     connect?: BorrowWhereUniqueInput | BorrowWhereUniqueInput[]
+  }
+
+  export type ItemUpdateimageUrlInput = {
+    set?: string[]
+    push?: string | string[]
   }
 
   export type EnumItemStatusFieldUpdateOperationsInput = {
@@ -10929,7 +10940,7 @@ export namespace Prisma {
   export type ItemCreateWithoutOwnerInput = {
     name: string
     description?: string | null
-    imageUrl?: string | null
+    imageUrl?: ItemCreateimageUrlInput | string[]
     status?: $Enums.ItemStatus
     latitude: number
     longitude: number
@@ -10943,7 +10954,7 @@ export namespace Prisma {
     id?: number
     name: string
     description?: string | null
-    imageUrl?: string | null
+    imageUrl?: ItemCreateimageUrlInput | string[]
     status?: $Enums.ItemStatus
     latitude: number
     longitude: number
@@ -11091,7 +11102,7 @@ export namespace Prisma {
     id?: IntFilter<"Item"> | number
     name?: StringFilter<"Item"> | string
     description?: StringNullableFilter<"Item"> | string | null
-    imageUrl?: StringNullableFilter<"Item"> | string | null
+    imageUrl?: StringNullableListFilter<"Item">
     status?: EnumItemStatusFilter<"Item"> | $Enums.ItemStatus
     latitude?: FloatFilter<"Item"> | number
     longitude?: FloatFilter<"Item"> | number
@@ -11376,7 +11387,7 @@ export namespace Prisma {
   export type ItemCreateWithoutCommunityInput = {
     name: string
     description?: string | null
-    imageUrl?: string | null
+    imageUrl?: ItemCreateimageUrlInput | string[]
     status?: $Enums.ItemStatus
     latitude: number
     longitude: number
@@ -11390,7 +11401,7 @@ export namespace Prisma {
     id?: number
     name: string
     description?: string | null
-    imageUrl?: string | null
+    imageUrl?: ItemCreateimageUrlInput | string[]
     status?: $Enums.ItemStatus
     latitude: number
     longitude: number
@@ -11661,7 +11672,7 @@ export namespace Prisma {
   export type ItemCreateWithoutBorrowRecordsInput = {
     name: string
     description?: string | null
-    imageUrl?: string | null
+    imageUrl?: ItemCreateimageUrlInput | string[]
     status?: $Enums.ItemStatus
     latitude: number
     longitude: number
@@ -11675,7 +11686,7 @@ export namespace Prisma {
     id?: number
     name: string
     description?: string | null
-    imageUrl?: string | null
+    imageUrl?: ItemCreateimageUrlInput | string[]
     status?: $Enums.ItemStatus
     latitude: number
     longitude: number
@@ -11786,7 +11797,7 @@ export namespace Prisma {
   export type ItemUpdateWithoutBorrowRecordsInput = {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    imageUrl?: ItemUpdateimageUrlInput | string[]
     status?: EnumItemStatusFieldUpdateOperationsInput | $Enums.ItemStatus
     latitude?: FloatFieldUpdateOperationsInput | number
     longitude?: FloatFieldUpdateOperationsInput | number
@@ -11800,7 +11811,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    imageUrl?: ItemUpdateimageUrlInput | string[]
     status?: EnumItemStatusFieldUpdateOperationsInput | $Enums.ItemStatus
     latitude?: FloatFieldUpdateOperationsInput | number
     longitude?: FloatFieldUpdateOperationsInput | number
@@ -11890,7 +11901,7 @@ export namespace Prisma {
     id?: number
     name: string
     description?: string | null
-    imageUrl?: string | null
+    imageUrl?: ItemCreateimageUrlInput | string[]
     status?: $Enums.ItemStatus
     latitude: number
     longitude: number
@@ -11936,7 +11947,7 @@ export namespace Prisma {
   export type ItemUpdateWithoutOwnerInput = {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    imageUrl?: ItemUpdateimageUrlInput | string[]
     status?: EnumItemStatusFieldUpdateOperationsInput | $Enums.ItemStatus
     latitude?: FloatFieldUpdateOperationsInput | number
     longitude?: FloatFieldUpdateOperationsInput | number
@@ -11950,7 +11961,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    imageUrl?: ItemUpdateimageUrlInput | string[]
     status?: EnumItemStatusFieldUpdateOperationsInput | $Enums.ItemStatus
     latitude?: FloatFieldUpdateOperationsInput | number
     longitude?: FloatFieldUpdateOperationsInput | number
@@ -11964,7 +11975,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    imageUrl?: ItemUpdateimageUrlInput | string[]
     status?: EnumItemStatusFieldUpdateOperationsInput | $Enums.ItemStatus
     latitude?: FloatFieldUpdateOperationsInput | number
     longitude?: FloatFieldUpdateOperationsInput | number
@@ -12119,7 +12130,7 @@ export namespace Prisma {
     id?: number
     name: string
     description?: string | null
-    imageUrl?: string | null
+    imageUrl?: ItemCreateimageUrlInput | string[]
     status?: $Enums.ItemStatus
     latitude: number
     longitude: number
@@ -12136,7 +12147,7 @@ export namespace Prisma {
   export type ItemUpdateWithoutCommunityInput = {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    imageUrl?: ItemUpdateimageUrlInput | string[]
     status?: EnumItemStatusFieldUpdateOperationsInput | $Enums.ItemStatus
     latitude?: FloatFieldUpdateOperationsInput | number
     longitude?: FloatFieldUpdateOperationsInput | number
@@ -12150,7 +12161,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    imageUrl?: ItemUpdateimageUrlInput | string[]
     status?: EnumItemStatusFieldUpdateOperationsInput | $Enums.ItemStatus
     latitude?: FloatFieldUpdateOperationsInput | number
     longitude?: FloatFieldUpdateOperationsInput | number
@@ -12164,7 +12175,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    imageUrl?: ItemUpdateimageUrlInput | string[]
     status?: EnumItemStatusFieldUpdateOperationsInput | $Enums.ItemStatus
     latitude?: FloatFieldUpdateOperationsInput | number
     longitude?: FloatFieldUpdateOperationsInput | number

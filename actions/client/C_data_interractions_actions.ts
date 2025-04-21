@@ -8,7 +8,7 @@ export async function getItemsNearby(){
 export async function addNewItem(formdata:TaddItmesfnArg):Promise<TaddItmesFnReturn>{
 
     const {data, images} = formdata
-    console.log(data, images)
+    
 
 
     try{

@@ -10,3 +10,14 @@ export type TsessionCookie = {
     success: boolean,
     data?: string,
 }
+
+export type TaddItmes = {
+	name: string,
+	description: string,
+    communityId?: string,
+    imageUrl: string[],
+    latitude: number,
+    longitude: number,
+    ownerId: string
+    
+}

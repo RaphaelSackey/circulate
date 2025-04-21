@@ -35,7 +35,7 @@ model Item {
   id          Int        @id @default(autoincrement())
   name        String
   description String?
-  imageUrl    String?
+  imageUrl    String[]
   status      ItemStatus @default(AVAILABLE)
   latitude    Float
   longitude   Float
