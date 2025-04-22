@@ -1,10 +1,11 @@
 "use client";
 
-import ItemCard from "@/components/ui/itemcard";
 import { useState } from "react";
 import { Search } from "lucide-react";
 import Link from "next/link";
 import DropdownMenuCheckboxes from "@/components/ui/dropdowncheckbox";
+import { ItemCard } from "@/components/ui/itemcard";
+import { Testimonial } from "@/components/ui/itemcard";
 
 
 export default function BrowseItems() {
@@ -19,6 +20,13 @@ export default function BrowseItems() {
 				: [...prev, value]
 		);
 	};
+
+    const testimonials: Testimonial[]  = [
+        {description: 'here is somethign that you might like and i am selling it for like ', name: 'name one', distance: '2 Miles', src: '/assets/lawn.jpg'},
+        {description: 'here is somethign that you might like and i am selling it for like ', name: 'name one', distance: '2 Miles', src: '/assets/hero.png'},
+        
+        
+    ]
 	return (
 		<div className='container mx-auto flex flex-col gap-5'>
 			{/* filter and add items buttons */}
@@ -53,41 +61,14 @@ export default function BrowseItems() {
                     Location: <span className='opacity-50 text-md'>Near You</span>
                 </h1>
                 <div className=' grid md:grid-cols-2 xl:grid-cols-3 grid-cols-1 gap-2 '>
-                    <ItemCard
-                        imgUrl='ds'
-                        description='sd'
-                        distance='ds'
-                        status='Available'
-                        name='sdadd'
-                    />
-                    <ItemCard
-                        imgUrl='ds'
-                        description='sd'
-                        distance='ds'
-                        status='Available'
-                        name='sdadd'
-                    />
-                    <ItemCard
-                        imgUrl='ds'
-                        description='sd'
-                        distance='ds'
-                        status='Available'
-                        name='sdadd'
-                    />
-                    <ItemCard
-                        imgUrl='ds'
-                        description='sd'
-                        distance='ds'
-                        status='Available'
-                        name='sdadd'
-                    />
-                    <ItemCard
-                        imgUrl='ds'
-                        description='sd'
-                        distance='ds'
-                        status='Available'
-                        name='sdadd'
-                    />
+                    <ItemCard testimonials = {testimonials}/>
+                    <ItemCard testimonials = {testimonials}/>
+                    <ItemCard testimonials = {testimonials}/>
+                    <ItemCard testimonials = {testimonials}/>
+                    <ItemCard testimonials = {testimonials}/>
+                    <ItemCard testimonials = {testimonials}/>
+                    <ItemCard testimonials = {testimonials}/>
+                    
                 </div>
             </div>
 		</div>

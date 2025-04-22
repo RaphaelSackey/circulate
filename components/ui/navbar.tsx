@@ -46,6 +46,7 @@ export default function Navbar() {
 							<Image
 								src='/websiteLogos/logo.png'
 								alt='Logo'
+								priority
 								fill
 							/>
 						</Link>
