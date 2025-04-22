@@ -21,3 +21,12 @@ export type TaddItmes = {
     ownerId: string
     
 }
+
+export type TgetItems = {
+    longitude: number,
+    latitude: number,
+    batch: string,
+    searchQuery: string
+}
+
+

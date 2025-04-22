@@ -40,12 +40,12 @@ export async function getItemsByCurrentLocation({data, batch}: {data: TitemsByCu
             return {success: false}
         }
 
-        const {itemsNearby, nextBatch} = await response.json()
+        const {success, itemsNearby, nextBatch} = await response.json()
 
-        return {success: false, itemsNearby, nextBatch }
+        return {success, itemsNearby, nextBatch }
     
     }catch(e){
-        return {success: false}
+        throw e
     }
 }
 

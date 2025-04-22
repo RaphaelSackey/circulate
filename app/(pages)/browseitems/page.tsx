@@ -9,19 +9,24 @@ import { Testimonial } from "@/components/ui/itemcard";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { getItemsByCurrentLocation } from "@/actions/client/C_data_interractions_actions";
 import { useLocation } from "@/context/location";
+import { PromptAlert } from "@/components/ui/promptalert";
+
 
 export default function BrowseItems() {
 	const [searchWord, setSearchWord] = useState("");
 	const [selectedFilterItems, setSelectedFilterItems] = useState<string[]>(
 		[]
 	);
+	const [showPromptAlert, setShowPromptAlert] = useState(false)
+	const [locationProptAlertShown, setlocationProptAlertShown] = useState(false)
 	const [queryData, setQueryData] = useState({
 		longitude: 0,
 		latitude: 0,
 		searchQuery: "",
 	});
 
-	const location = useLocation();
+	const {location, isLoading:locationLoading, error, requestLocation} = useLocation();
+	console.log(location)
 
 	if (!location) {
 		console.log("Location is needed to see items");
@@ -37,32 +42,34 @@ export default function BrowseItems() {
 		if (location) {
 			setQueryData((prev) => ({
 				...prev,
-				latitude: location?.latitude,
-				longitude: location?.longitude,
+				latitude: location.latitude,
+				longitude: location.longitude,
 			}));
 		}
 	}, [location]);
+	console.log(queryData.latitude, queryData.longitude)
 
 	// infinite scroll query
     const isReady = queryData.latitude !== 0 && queryData.longitude !== 0;
 	const {
 		data,
-		error,
 		fetchNextPage,
 		hasNextPage,
-		isFetching,
 		isFetchingNextPage,
 		status,
 	} = useInfiniteQuery({
 		queryKey: ["itemsData"],
 		queryFn: ({ pageParam }) => getItemsByCurrentLocation(pageParam),
 		initialPageParam: { data: queryData, batch: 1 },
-		getNextPageParam: (lastPage, pages) => {
-			return lastPage.success ? lastPage.nextBatch : undefined;
+		getNextPageParam: (lastPage) => {
+			return lastPage.success && lastPage.nextBatch? lastPage.nextBatch : undefined;
 		},
-        enabled: isReady
+        enabled: isReady,
 	});
 
+    if (status === 'success'){
+        console.log(data)
+    }
 	const toggleItem = (value: string) => {
 		setSelectedFilterItems((prev) =>
 			prev.includes(value)
@@ -87,8 +94,26 @@ export default function BrowseItems() {
 			src: "/assets/hero.png",
 		},
 	];
+
+	useEffect(() => {
+		const hasSeenPrompt = sessionStorage.getItem("locationPromptShown");
+		if (location === null && !hasSeenPrompt){
+			sessionStorage.setItem("locationPromptShown", "true");
+			setShowPromptAlert(true)
+		}
+	},[location])
+	
+	const handleAllowLocationAccess = () => {
+		requestLocation()
+		setShowPromptAlert(false)
+	}
+	const handleDenyLocationAccess = () =>{
+		setShowPromptAlert(false)
+	}
+	
 	return (
 		<div className='container mx-auto flex flex-col gap-5'>
+			{showPromptAlert && <PromptAlert message="Location access is needed to be able to view items near you" acceptfn={handleAllowLocationAccess} rejectfn={handleDenyLocationAccess}/>}
 			{/* filter and add items buttons */}
 			<div className='flex justify-end items-center gap-2 mt-6'>
 				<DropdownMenuCheckboxes
