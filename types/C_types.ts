@@ -73,3 +73,9 @@ export type TaddItmesFnReturn = {
 	success: boolean,
 	message: string
 }
+
+export type TitemsByCurrentLocation = {
+	longitude: number,
+	latitude: number,
+	searchQuery: string
+}
