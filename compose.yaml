@@ -27,6 +27,8 @@ services:
             POSTGRES_DB: postgres # default database
         volumes:
             - pg_data:/var/lib/postgresql/data
+        
+        # run CREATE EXTENSION postgis; in pg admin query tools when volumes are deleted to reinstall postgis extention
     pgadmin4:
         image: dpage/pgadmin4
         restart: always

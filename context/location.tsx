@@ -36,7 +36,7 @@ export function LocationContextProvider({ children }: { children: ReactNode }) {
 
 	// Load from localStorage (optional)
 	useEffect(() => {
-		const saved = localStorage.getItem("user_location");
+		const saved = sessionStorage.getItem("user_location");
 		if (saved) {
 			setLocation(JSON.parse(saved));
 		}
@@ -51,7 +51,7 @@ export function LocationContextProvider({ children }: { children: ReactNode }) {
 					longitude: pos.coords.longitude,
 				};
 				setLocation(coords);
-				localStorage.setItem("user_location", JSON.stringify(coords));
+				sessionStorage.setItem("user_location", JSON.stringify(coords));
 				setIsLoading(false);
 				setError(null);
 			},

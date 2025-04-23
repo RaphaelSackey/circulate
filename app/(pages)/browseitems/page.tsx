@@ -14,11 +14,9 @@ import { PromptAlert } from "@/components/ui/promptalert";
 
 export default function BrowseItems() {
 	const [searchWord, setSearchWord] = useState("");
-	const [selectedFilterItems, setSelectedFilterItems] = useState<string[]>(
-		[]
-	);
+	const [selectedFilterItems, setSelectedFilterItems] = useState<string[]>([]);
 	const [showPromptAlert, setShowPromptAlert] = useState(false)
-	const [locationProptAlertShown, setlocationProptAlertShown] = useState(false)
+
 	const [queryData, setQueryData] = useState({
 		longitude: 0,
 		latitude: 0,
@@ -43,7 +41,6 @@ export default function BrowseItems() {
 			}));
 		}
 	}, [location]);
-	console.log(queryData.latitude, queryData.longitude)
 
 	// infinite scroll query
     const isReady = queryData.latitude !== 0 && queryData.longitude !== 0;
@@ -64,9 +61,9 @@ export default function BrowseItems() {
 		retry: false,
 	});
 
-    if (status === 'success'){
-        console.log(data.pages)
-    }
+    // if (status === 'success'){
+    //     console.log(data.pages)
+    // }
 	const toggleItem = (value: string) => {
 		setSelectedFilterItems((prev) =>
 			prev.includes(value)
