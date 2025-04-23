@@ -26,11 +26,7 @@ export default function BrowseItems() {
 	});
 
 	const {location, isLoading:locationLoading, error, requestLocation} = useLocation();
-	console.log(location)
 
-	if (!location) {
-		console.log("Location is needed to see items");
-	}
 
     // update setQueryData when user is typing in the search bar
 	useEffect(() => {
@@ -65,10 +61,11 @@ export default function BrowseItems() {
 			return lastPage.success && lastPage.nextBatch? lastPage.nextBatch : undefined;
 		},
         enabled: isReady,
+		retry: false,
 	});
 
     if (status === 'success'){
-        console.log(data)
+        console.log(data.pages)
     }
 	const toggleItem = (value: string) => {
 		setSelectedFilterItems((prev) =>

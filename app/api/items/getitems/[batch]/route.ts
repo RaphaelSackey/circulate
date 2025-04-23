@@ -19,7 +19,7 @@ export async function POST(
 
 	if (!token) {
 		console.log("invalid token");
-		return NextResponse.json("", { status: 401 });
+		return NextResponse.json("invalid token", { status: 401 });
 	}
 
 	const isValid = await FBvalidateSessionCookie(token);
@@ -40,6 +40,7 @@ export async function POST(
         return NextResponse.json({success, itemsNearby, nextBatch},{status:200})
 
     }catch(e){
-        return NextResponse.json({status:500})
+		console.log(e)
+        return NextResponse.json('unable to get items',{status:500})
     }
 }

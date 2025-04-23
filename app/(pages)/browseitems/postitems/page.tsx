@@ -19,7 +19,7 @@ export default function PostItems() {
 	const [images, setImages] = useState<Array<string>>([]);
 	const [alertMessage, setAlertMessage] = useState("");
 	const [showAlert, setShowAlert] = useState(false);
-	const location = useLocation();
+	const {location} = useLocation();
 	console.log(location);
 
 	// set the location data for the formdata

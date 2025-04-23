@@ -53,6 +53,7 @@ export async function PGaddNewUser(id: string): Promise<boolean> {
 
 		return true;
 	} catch (e) {
+		console.log(e)
 		return false;
 	}
 }
