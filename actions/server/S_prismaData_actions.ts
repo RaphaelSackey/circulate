@@ -46,6 +46,7 @@ export async function getItems({
 			Array<{
 				id: number;
 				name: string;
+				imageUrl: string[];
 				latitude: number;
 				longitude: number;
 				distance: number;
@@ -54,8 +55,8 @@ export async function getItems({
 			SELECT 
 				id,
 				name,
-				latitude,
-				longitude,
+				"imageUrl",
+				description,
 				ST_DistanceSphere(
 					ST_MakePoint(${longitude}::double precision, ${latitude}::double precision),
 					ST_MakePoint(longitude, latitude)

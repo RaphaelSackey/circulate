@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, ReactElement } from "react";
 import { Search } from "lucide-react";
 import Link from "next/link";
 import DropdownMenuCheckboxes from "@/components/ui/dropdowncheckbox";
@@ -16,6 +16,7 @@ export default function BrowseItems() {
 	const [searchWord, setSearchWord] = useState("");
 	const [selectedFilterItems, setSelectedFilterItems] = useState<string[]>([]);
 	const [showPromptAlert, setShowPromptAlert] = useState(false)
+	const [cards, setCards] = useState<ReactElement[]>([])
 
 	const [queryData, setQueryData] = useState({
 		longitude: 0,
@@ -61,9 +62,46 @@ export default function BrowseItems() {
 		retry: false,
 	});
 
-    // if (status === 'success'){
-    //     console.log(data.pages)
-    // }
+	// create the items nearby ui cards
+	// !!!!!!!!!
+	useEffect(() => {
+		if (data?.pages[0].success){
+			if (data.pages[0].itemsNearby.length){
+				const tempCards = data.pages[0].itemsNearby.map(item => {
+					const testimonials: Testimonial[] = []
+					if (item.imageUrl.length > 1){
+						for (let i = 0; i < item.imageUrl.length - 1; i ++ ){
+							testimonials.push({
+								name: item.name,
+								distance: String(item.distance),
+								description: item.description,
+								src: item.imageUrl[i]
+							})
+						}
+					
+					return <ItemCard testimonials={testimonials} key={item.id}/>
+					
+					}else{
+						const testimonials: Testimonial[] = []
+						testimonials.push({
+							name: item.name,
+							description: item.description,
+							distance: String(item.distance),
+							src: item.imageUrl[0]
+						})
+						return <ItemCard testimonials={testimonials} key={item.id}/>
+					}
+				})
+				
+				setCards(tempCards)
+			}
+		}
+	},[data])
+    
+	
+	if (status === 'success'){
+        console.log(data.pages[0].nextBatch)
+    }
 	const toggleItem = (value: string) => {
 		setSelectedFilterItems((prev) =>
 			prev.includes(value)
@@ -72,22 +110,6 @@ export default function BrowseItems() {
 		);
 	};
 
-	const testimonials: Testimonial[] = [
-		{
-			description:
-				"here is somethign that you might like and i am selling it for like ",
-			name: "name one",
-			distance: "2 Miles",
-			src: "/assets/lawn.jpg",
-		},
-		{
-			description:
-				"here is somethign that you might like and i am selling it for like ",
-			name: "name one",
-			distance: "2 Miles",
-			src: "/assets/hero.png",
-		},
-	];
 
 	useEffect(() => {
 		const hasSeenPrompt = sessionStorage.getItem("locationPromptShown");
@@ -144,13 +166,7 @@ export default function BrowseItems() {
 					<span className='opacity-50 text-md'>Near You</span>
 				</h1>
 				<div className=' grid md:grid-cols-2 xl:grid-cols-3 grid-cols-1 gap-2 '>
-					<ItemCard testimonials={testimonials} />
-					<ItemCard testimonials={testimonials} />
-					<ItemCard testimonials={testimonials} />
-					<ItemCard testimonials={testimonials} />
-					<ItemCard testimonials={testimonials} />
-					<ItemCard testimonials={testimonials} />
-					<ItemCard testimonials={testimonials} />
+					{cards}
 				</div>
 			</div>
 		</div>

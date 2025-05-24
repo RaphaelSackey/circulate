@@ -79,3 +79,18 @@ export type TitemsByCurrentLocation = {
 	latitude: number,
 	searchQuery: string
 }
+
+
+type TitemsNearby = {
+		id: string,
+		name: string,
+		imageUrl: string[],
+		description: string,
+		distance: number
+}
+
+export type TgetItemsFnReturn = {
+	success: boolean, 
+	itemsNearby: TitemsNearby[] , 
+	nextBatch: any
+}

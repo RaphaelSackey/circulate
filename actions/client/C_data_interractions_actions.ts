@@ -1,4 +1,4 @@
-import { TaddItmesFnReturn, TaddItmesfnArg, TitemsByCurrentLocation } from "@/types/C_types"
+import { TaddItmesFnReturn, TaddItmesfnArg, TitemsByCurrentLocation, TgetItemsFnReturn } from "@/types/C_types"
 
 
 export async function getItemsNearby(){
@@ -27,7 +27,7 @@ export async function addNewItem(formdata:TaddItmesfnArg):Promise<TaddItmesFnRet
 
 }
 
-export async function getItemsByCurrentLocation({data, batch}: {data: TitemsByCurrentLocation,batch:number }){
+export async function getItemsByCurrentLocation({data, batch}: {data: TitemsByCurrentLocation,batch:number }):Promise<TgetItemsFnReturn>{
 
     try {
         const response = await fetch(`/api/items/getitems/${batch}`, {
@@ -37,11 +37,11 @@ export async function getItemsByCurrentLocation({data, batch}: {data: TitemsByCu
         })
 
         if (!response.ok){
-            return {success: false}
+            return {success: false, itemsNearby: [], nextBatch: null}
         }
 
         const {success, itemsNearby, nextBatch} = await response.json()
-        console.log('get items',{success, itemsNearby, nextBatch})
+        // console.log('get items',{success, itemsNearby, nextBatch})
         return {success, itemsNearby, nextBatch }
     
     }catch(e){

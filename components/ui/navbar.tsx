@@ -46,8 +46,11 @@ export default function Navbar() {
 							<Image
 								src='/websiteLogos/logo.png'
 								alt='Logo'
+								height={160}
+								width={160}
+								className=""
 								priority
-								fill
+								
 							/>
 						</Link>
 					</div>
