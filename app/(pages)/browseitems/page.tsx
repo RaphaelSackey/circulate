@@ -10,6 +10,8 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import { getItemsByCurrentLocation } from "@/actions/client/C_data_interractions_actions";
 import { useLocation } from "@/context/location";
 import { PromptAlert } from "@/components/ui/promptalert";
+import Skeleton from "@/components/ui/skeleton";
+import Itmesnotfound from "@/components/ui/itemsnotfound";
 
 
 export default function BrowseItems() {
@@ -25,6 +27,8 @@ export default function BrowseItems() {
 	});
 
 	const {location, isLoading:locationLoading, error, requestLocation} = useLocation();
+
+	const skel = [...Array(5).keys()].map(cur => <Skeleton key={cur}/>)
 
 
     // update setQueryData when user is typing in the search bar
@@ -62,6 +66,8 @@ export default function BrowseItems() {
 		retry: false,
 	});
 
+	console.log(status)
+
 	// create the items nearby ui cards
 	// !!!!!!!!!
 	useEffect(() => {
@@ -94,6 +100,8 @@ export default function BrowseItems() {
 				})
 				
 				setCards(tempCards)
+			}else{
+				setCards([<Itmesnotfound key={1}/>])
 			}
 		}
 	},[data])
@@ -166,7 +174,8 @@ export default function BrowseItems() {
 					<span className='opacity-50 text-md'>Near You</span>
 				</h1>
 				<div className=' grid md:grid-cols-2 xl:grid-cols-3 grid-cols-1 gap-2 '>
-					{cards}
+					{status === "pending"? skel : cards}
+					
 				</div>
 			</div>
 		</div>
