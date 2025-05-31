@@ -15,9 +15,11 @@ export type Testimonial = {
 export const ItemCard = ({
 	testimonials,
 	autoplay = false,
+	display = true
 }: {
 	testimonials: Testimonial[];
 	autoplay?: boolean;
+	display: boolean
 }) => {
 	const [active, setActive] = useState(0);
 	const [onClient, setOnClient] = useState(false);
@@ -53,7 +55,7 @@ export const ItemCard = ({
 	}
 	
 	return (
-		<div className='relative px-2 py-2 antialiased border rounded-lg '>
+		display? <div className='relative px-2 py-2 antialiased border rounded-lg '>
 			
 			{/* Highlight behind card
 			<div className='absolute inset-0 top-3 right-3 flex items-center justify-center z-0'>
@@ -137,6 +139,6 @@ export const ItemCard = ({
 				</div>
 			</div>
 			<button className="absolute right-2 bottom-1 bg-blue-600 px-7 py-2 rounded text-white">Request</button>
-		</div>
+		</div> : ""
 	);
 };

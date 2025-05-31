@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, ReactElement } from "react";
+import { useState, useEffect, ReactElement, useLayoutEffect } from "react";
 import { Search } from "lucide-react";
 import Link from "next/link";
 import DropdownMenuCheckboxes from "@/components/ui/dropdowncheckbox";
@@ -10,8 +10,10 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import { getItemsByCurrentLocation } from "@/actions/client/C_data_interractions_actions";
 import { useLocation } from "@/context/location";
 import { PromptAlert } from "@/components/ui/promptalert";
+import useSignedIn from "@/hooks/singedInStatus";
 import Skeleton from "@/components/ui/skeleton";
 import Itmesnotfound from "@/components/ui/itemsnotfound";
+import { useRouter } from 'next/navigation'
 
 
 export default function BrowseItems() {
@@ -19,6 +21,7 @@ export default function BrowseItems() {
 	const [selectedFilterItems, setSelectedFilterItems] = useState<string[]>([]);
 	const [showPromptAlert, setShowPromptAlert] = useState(false)
 	const [cards, setCards] = useState<ReactElement[]>([])
+	const router = useRouter()
 
 	const [queryData, setQueryData] = useState({
 		longitude: 0,
@@ -29,7 +32,7 @@ export default function BrowseItems() {
 	const {location, isLoading:locationLoading, error, requestLocation} = useLocation();
 
 	const skel = [...Array(5).keys()].map(cur => <Skeleton key={cur}/>)
-
+	const {data:signInData, isPending, isSuccess} = useSignedIn()
 
     // update setQueryData when user is typing in the search bar
 	useEffect(() => {
@@ -66,15 +69,27 @@ export default function BrowseItems() {
 		retry: false,
 	});
 
-	console.log(status)
+	useLayoutEffect(() => {
+		if (!isPending && !isSuccess){
+			router.push('/')
+		}
 
-	// create the items nearby ui cards
-	// !!!!!!!!!
+	}, [isPending])
+	
 	useEffect(() => {
 		if (data?.pages[0].success){
 			if (data.pages[0].itemsNearby.length){
 				const tempCards = data.pages[0].itemsNearby.map(item => {
 					const testimonials: Testimonial[] = []
+					let shouldDisplay = true
+					if (searchWord.length > 0){
+						const word = item.name.toLowerCase()
+						const filWord = searchWord.toLowerCase()
+
+						if (!word.includes(filWord)){
+							shouldDisplay = false
+						}
+					}
 					if (item.imageUrl.length > 1){
 						for (let i = 0; i < item.imageUrl.length - 1; i ++ ){
 							testimonials.push({
@@ -84,8 +99,8 @@ export default function BrowseItems() {
 								src: item.imageUrl[i]
 							})
 						}
-					
-					return <ItemCard testimonials={testimonials} key={item.id}/>
+				
+					return <ItemCard testimonials={testimonials} key={item.id} display= {shouldDisplay}/>
 					
 					}else{
 						const testimonials: Testimonial[] = []
@@ -95,7 +110,8 @@ export default function BrowseItems() {
 							distance: String(item.distance),
 							src: item.imageUrl[0]
 						})
-						return <ItemCard testimonials={testimonials} key={item.id}/>
+
+						return <ItemCard testimonials={testimonials} key={item.id} display = {shouldDisplay}/>
 					}
 				})
 				
@@ -104,12 +120,8 @@ export default function BrowseItems() {
 				setCards([<Itmesnotfound key={1}/>])
 			}
 		}
-	},[data])
+	},[data, searchWord])
     
-	
-	if (status === 'success'){
-        console.log(data.pages[0].nextBatch)
-    }
 	const toggleItem = (value: string) => {
 		setSelectedFilterItems((prev) =>
 			prev.includes(value)
@@ -126,6 +138,13 @@ export default function BrowseItems() {
 			setShowPromptAlert(true)
 		}
 	},[location])
+	
+	function searchFilter(){
+		console.log(data?.pages[0].itemsNearby)
+		if (data?.pages[0].itemsNearby){
+			
+		}
+	}
 	
 	const handleAllowLocationAccess = () => {
 		requestLocation()
@@ -160,8 +179,10 @@ export default function BrowseItems() {
 						className='h-10 border w-full rounded pl-13'
 						placeholder='Search items...'
 						value={searchWord}
-						onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+						onChange={(e: React.ChangeEvent<HTMLInputElement>) =>{
 							setSearchWord(e.target.value)
+							searchFilter()
+						}
 						}
 					/>
 				</form>

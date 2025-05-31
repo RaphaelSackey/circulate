@@ -11,29 +11,26 @@ import { signOut } from "@/actions/client/C_auth_actions";
 import { useRouter } from "next/navigation";
 import { useQueryClient } from "@tanstack/react-query";
 
-
 export default function Navbar() {
 	const [isSidebarOpen, setSidebarOpen] = useState(false);
 	const pathname = usePathname();
-	const {isPending, isSuccess} = useSignedIn()
-	const router = useRouter()
-	const queryClient = useQueryClient()
-	
+	const { isPending, isSuccess } = useSignedIn();
+	const router = useRouter();
+	const queryClient = useQueryClient();
+
 	// mutation to log user out
 	const mutation = useMutation({
 		mutationFn: signOut,
 		onSuccess: (data) => {
-			if (data.status){
-				queryClient.invalidateQueries({queryKey: ['uid']})
-				router.push('/')
+			if (data.status) {
+				queryClient.invalidateQueries({ queryKey: ["uid"] });
+				router.push("/");
 			}
 		},
 		onError: () => {
-			console.log('failed to sign out')
-
-		} ,
-
-	})
+			console.log("failed to sign out");
+		},
+	});
 
 	return (
 		<>
@@ -48,9 +45,8 @@ export default function Navbar() {
 								alt='Logo'
 								height={160}
 								width={160}
-								className=""
+								className=''
 								priority
-								
 							/>
 						</Link>
 					</div>
@@ -72,7 +68,6 @@ export default function Navbar() {
 							className='hover:underline'>
 							Profile
 						</Link>
-						
 					</div>
 				</div>
 
@@ -81,28 +76,45 @@ export default function Navbar() {
 					<div className='flex items-center justify-center gap-1'>
 						<Link
 							href='/login'
-							className={!isPending && isSuccess? 'hidden': 'hover:underline'}>
+							className={
+								!isPending && isSuccess
+									? "hidden"
+									: "hover:underline"
+							}>
 							Log in
 						</Link>
-						<div className={!isPending && isSuccess? 'hidden': ''}>/</div>
+						<div
+							className={!isPending && isSuccess ? "hidden" : ""}>
+							/
+						</div>
 						<Link
 							href='/signup'
-							className={!isPending && isSuccess? 'hidden': 'hover:underline'}>
+							className={
+								!isPending && isSuccess
+									? "hidden"
+									: "hover:underline"
+							}>
 							Sign up
 						</Link>
 						<button
-							className={!isPending && isSuccess? 'hover:underline': 'hidden'}
-							onClick = {() => mutation.mutate()}
-							>
+							className={
+								!isPending && isSuccess
+									? "hover:underline"
+									: "hidden"
+							}
+							onClick={() => mutation.mutate()}>
 							Sign out
-							
 						</button>
 					</div>
-					<Link
-						href='/browseitems'
-						className='flex bg-calltoaction text-white items-center justify-center rounded-sm px-5 py-1 hover:opacity-85 text-xl dark:bg-gradient-to-r from-calltoaction to-gray-900'>
-						Browse Items
-					</Link>
+					{!isPending && isSuccess ? (
+						<Link
+							href='/browseitems'
+							className='flex bg-calltoaction text-white items-center justify-center rounded-sm px-5 py-1 hover:opacity-85 text-xl dark:bg-gradient-to-r from-calltoaction to-gray-900'>
+							Browse Items
+						</Link>
+					) : (
+						""
+					)}
 					<ModeToggle />
 				</div>
 
@@ -146,9 +158,7 @@ export default function Navbar() {
 					</Link>
 					<Link
 						href='/community'
-						className={
-							pathname === "/community" ? "active" : ""
-						}
+						className={pathname === "/community" ? "active" : ""}
 						onClick={() => setSidebarOpen(false)}>
 						Community
 					</Link>
@@ -162,33 +172,44 @@ export default function Navbar() {
 					</Link>
 					<Link
 						href='/login'
-						className={!isPending && isSuccess? 'hidden' :`hover:underline ${
-							pathname === "/login" ? "active" : ""
-						}`}
+						className={
+							!isPending && isSuccess
+								? "hidden"
+								: `hover:underline ${
+										pathname === "/login" ? "active" : ""
+								  }`
+						}
 						onClick={() => setSidebarOpen(false)}>
 						Log in
 					</Link>
-					
+
 					<Link
 						href='/signup'
-						className={!isPending && isSuccess? 'hidden' : `hover:underline ${
-							pathname === "/signup" ? "active" : ""
-						}`}
+						className={
+							!isPending && isSuccess
+								? "hidden"
+								: `hover:underline ${
+										pathname === "/signup" ? "active" : ""
+								  }`
+						}
 						onClick={() => setSidebarOpen(false)}>
 						Sign up
 					</Link>
 					<Link
 						href='/signup'
-						className={!isPending && !isSuccess? 'hidden' : `hover:underline ${
-							pathname === "/signup" ? "active" : ""
-						}`}
+						className={
+							!isPending && !isSuccess
+								? "hidden"
+								: `hover:underline ${
+										pathname === "/signup" ? "active" : ""
+								  }`
+						}
 						onClick={() => {
-							setSidebarOpen(false)
-							mutation.mutate()
-							}}>
+							setSidebarOpen(false);
+							mutation.mutate();
+						}}>
 						Sign out
 					</Link>
-					
 				</div>
 			</div>
 
