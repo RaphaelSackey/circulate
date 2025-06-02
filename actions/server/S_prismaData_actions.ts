@@ -10,6 +10,7 @@ export async function addItem(data: TaddItmes): Promise<boolean> {
 				name: data.name,
 				description: data.description,
 				imageUrl: data.imageUrl,
+				category: data.category,
 				latitude: data.latitude,
 				longitude: data.longitude,
 				owner: {

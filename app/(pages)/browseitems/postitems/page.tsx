@@ -8,19 +8,23 @@ import { addNewItem } from "@/actions/client/C_data_interractions_actions";
 import { ErrorAlert } from "@/components/ui/erroralert";
 import { useLocation } from "@/context/location";
 import { LoaderCircle } from "lucide-react";
+import PostItemCategory from "@/components/ui/postitemcategories";
 
 export default function PostItems() {
+	const [images, setImages] = useState<Array<string>>([]);
+	const [alertMessage, setAlertMessage] = useState("");
+	const [showAlert, setShowAlert] = useState(false);
+	const [selectedFilterItems, setSelectedFilterItems] = useState<string[]>(
+		[]
+	);
 	const [formData, setFromData] = useState<TaddItmes>({
 		name: "",
 		description: "",
 		location: [],
+		category: selectedFilterItems,
 	});
-
-	const [images, setImages] = useState<Array<string>>([]);
-	const [alertMessage, setAlertMessage] = useState("");
-	const [showAlert, setShowAlert] = useState(false);
-	const {location} = useLocation();
-	console.log(location);
+	const { location } = useLocation();
+	console.log(selectedFilterItems);
 
 	// set the location data for the formdata
 	useEffect(() => {
@@ -78,6 +82,21 @@ export default function PostItems() {
 			mutate({ data: formData, images });
 		}
 	}
+
+	const toggleItem = (value: string) => {
+		setSelectedFilterItems((prev) =>
+			prev.includes(value)
+				? prev.filter((v) => v !== value)
+				: [...prev, value]
+		);
+	};
+
+	useEffect(() => {
+		setFromData((prev) => ({
+			...prev,
+			category: selectedFilterItems,
+		}));
+	}, [selectedFilterItems]);
 	return (
 		<div className='container mx-auto flex flex-col justify-center items-center'>
 			{showAlert && <ErrorAlert message={alertMessage} />}{" "}
@@ -97,6 +116,10 @@ export default function PostItems() {
 					className='border rounded h-10 pl-2'
 					value={formData.name}
 					onChange={handleFormChange}
+				/>
+				<PostItemCategory
+					toggleItem={toggleItem}
+					selectedFilterItems={selectedFilterItems}
 				/>
 				<label
 					htmlFor='description'

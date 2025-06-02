@@ -9,12 +9,14 @@ type dataType = {
 	name: string;
 	description: string;
 	location: [string, string];
+	category: string[]
 };
 
 export async function POST(request: NextRequest) {
 	const info = await request.json();
 	const data: dataType = info.data;
 	const images: string[] = info.images;
+
 	
     const cookieStore = await cookies();
 	const token = cookieStore.get("sessionCookie")?.value;
@@ -58,6 +60,7 @@ export async function POST(request: NextRequest) {
 	const addItmesData: TaddItmes = {
 		ownerId: isValid.data?.uid as string,
 		name: data.name,
+		category: data.category,
 		description: data.description,
 		latitude: Number(data.location[0]),
 		longitude: Number(data.location[1]),

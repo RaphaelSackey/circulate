@@ -131,6 +131,7 @@ exports.Prisma.UserScalarFieldEnum = {
 exports.Prisma.ItemScalarFieldEnum = {
   id: 'id',
   name: 'name',
+  category: 'category',
   description: 'description',
   imageUrl: 'imageUrl',
   status: 'status',

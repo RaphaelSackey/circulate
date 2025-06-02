@@ -50,6 +50,8 @@ export default function BrowseItems() {
 		}
 	}, [location]);
 
+	console.log('selected', selectedFilterItems)
+
 	// infinite scroll query
     const isReady = queryData.latitude !== 0 && queryData.longitude !== 0;
 	const {

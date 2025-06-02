@@ -2825,6 +2825,7 @@ export namespace Prisma {
   export type ItemCountAggregateOutputType = {
     id: number
     name: number
+    category: number
     description: number
     imageUrl: number
     status: number
@@ -2881,6 +2882,7 @@ export namespace Prisma {
   export type ItemCountAggregateInputType = {
     id?: true
     name?: true
+    category?: true
     description?: true
     imageUrl?: true
     status?: true
@@ -2982,6 +2984,7 @@ export namespace Prisma {
   export type ItemGroupByOutputType = {
     id: number
     name: string
+    category: string[]
     description: string | null
     imageUrl: string[]
     status: $Enums.ItemStatus
@@ -3015,6 +3018,7 @@ export namespace Prisma {
   export type ItemSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     name?: boolean
+    category?: boolean
     description?: boolean
     imageUrl?: boolean
     status?: boolean
@@ -3033,6 +3037,7 @@ export namespace Prisma {
   export type ItemSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     name?: boolean
+    category?: boolean
     description?: boolean
     imageUrl?: boolean
     status?: boolean
@@ -3049,6 +3054,7 @@ export namespace Prisma {
   export type ItemSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     name?: boolean
+    category?: boolean
     description?: boolean
     imageUrl?: boolean
     status?: boolean
@@ -3065,6 +3071,7 @@ export namespace Prisma {
   export type ItemSelectScalar = {
     id?: boolean
     name?: boolean
+    category?: boolean
     description?: boolean
     imageUrl?: boolean
     status?: boolean
@@ -3076,7 +3083,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type ItemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "imageUrl" | "status" | "latitude" | "longitude" | "ownerId" | "communityId" | "createdAt" | "updatedAt", ExtArgs["result"]["item"]>
+  export type ItemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "category" | "description" | "imageUrl" | "status" | "latitude" | "longitude" | "ownerId" | "communityId" | "createdAt" | "updatedAt", ExtArgs["result"]["item"]>
   export type ItemInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     owner?: boolean | UserDefaultArgs<ExtArgs>
     community?: boolean | Item$communityArgs<ExtArgs>
@@ -3102,6 +3109,7 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       id: number
       name: string
+      category: string[]
       description: string | null
       imageUrl: string[]
       status: $Enums.ItemStatus
@@ -3539,6 +3547,7 @@ export namespace Prisma {
   interface ItemFieldRefs {
     readonly id: FieldRef<"Item", 'Int'>
     readonly name: FieldRef<"Item", 'String'>
+    readonly category: FieldRef<"Item", 'String[]'>
     readonly description: FieldRef<"Item", 'String'>
     readonly imageUrl: FieldRef<"Item", 'String[]'>
     readonly status: FieldRef<"Item", 'ItemStatus'>
@@ -8510,6 +8519,7 @@ export namespace Prisma {
   export const ItemScalarFieldEnum: {
     id: 'id',
     name: 'name',
+    category: 'category',
     description: 'description',
     imageUrl: 'imageUrl',
     status: 'status',
@@ -8790,6 +8800,7 @@ export namespace Prisma {
     NOT?: ItemWhereInput | ItemWhereInput[]
     id?: IntFilter<"Item"> | number
     name?: StringFilter<"Item"> | string
+    category?: StringNullableListFilter<"Item">
     description?: StringNullableFilter<"Item"> | string | null
     imageUrl?: StringNullableListFilter<"Item">
     status?: EnumItemStatusFilter<"Item"> | $Enums.ItemStatus
@@ -8807,6 +8818,7 @@ export namespace Prisma {
   export type ItemOrderByWithRelationInput = {
     id?: SortOrder
     name?: SortOrder
+    category?: SortOrder
     description?: SortOrderInput | SortOrder
     imageUrl?: SortOrder
     status?: SortOrder
@@ -8827,6 +8839,7 @@ export namespace Prisma {
     OR?: ItemWhereInput[]
     NOT?: ItemWhereInput | ItemWhereInput[]
     name?: StringFilter<"Item"> | string
+    category?: StringNullableListFilter<"Item">
     description?: StringNullableFilter<"Item"> | string | null
     imageUrl?: StringNullableListFilter<"Item">
     status?: EnumItemStatusFilter<"Item"> | $Enums.ItemStatus
@@ -8844,6 +8857,7 @@ export namespace Prisma {
   export type ItemOrderByWithAggregationInput = {
     id?: SortOrder
     name?: SortOrder
+    category?: SortOrder
     description?: SortOrderInput | SortOrder
     imageUrl?: SortOrder
     status?: SortOrder
@@ -8866,6 +8880,7 @@ export namespace Prisma {
     NOT?: ItemScalarWhereWithAggregatesInput | ItemScalarWhereWithAggregatesInput[]
     id?: IntWithAggregatesFilter<"Item"> | number
     name?: StringWithAggregatesFilter<"Item"> | string
+    category?: StringNullableListFilter<"Item">
     description?: StringNullableWithAggregatesFilter<"Item"> | string | null
     imageUrl?: StringNullableListFilter<"Item">
     status?: EnumItemStatusWithAggregatesFilter<"Item"> | $Enums.ItemStatus
@@ -9227,6 +9242,7 @@ export namespace Prisma {
 
   export type ItemCreateInput = {
     name: string
+    category?: ItemCreatecategoryInput | string[]
     description?: string | null
     imageUrl?: ItemCreateimageUrlInput | string[]
     status?: $Enums.ItemStatus
@@ -9242,6 +9258,7 @@ export namespace Prisma {
   export type ItemUncheckedCreateInput = {
     id?: number
     name: string
+    category?: ItemCreatecategoryInput | string[]
     description?: string | null
     imageUrl?: ItemCreateimageUrlInput | string[]
     status?: $Enums.ItemStatus
@@ -9256,6 +9273,7 @@ export namespace Prisma {
 
   export type ItemUpdateInput = {
     name?: StringFieldUpdateOperationsInput | string
+    category?: ItemUpdatecategoryInput | string[]
     description?: NullableStringFieldUpdateOperationsInput | string | null
     imageUrl?: ItemUpdateimageUrlInput | string[]
     status?: EnumItemStatusFieldUpdateOperationsInput | $Enums.ItemStatus
@@ -9271,6 +9289,7 @@ export namespace Prisma {
   export type ItemUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
+    category?: ItemUpdatecategoryInput | string[]
     description?: NullableStringFieldUpdateOperationsInput | string | null
     imageUrl?: ItemUpdateimageUrlInput | string[]
     status?: EnumItemStatusFieldUpdateOperationsInput | $Enums.ItemStatus
@@ -9286,6 +9305,7 @@ export namespace Prisma {
   export type ItemCreateManyInput = {
     id?: number
     name: string
+    category?: ItemCreatecategoryInput | string[]
     description?: string | null
     imageUrl?: ItemCreateimageUrlInput | string[]
     status?: $Enums.ItemStatus
@@ -9299,6 +9319,7 @@ export namespace Prisma {
 
   export type ItemUpdateManyMutationInput = {
     name?: StringFieldUpdateOperationsInput | string
+    category?: ItemUpdatecategoryInput | string[]
     description?: NullableStringFieldUpdateOperationsInput | string | null
     imageUrl?: ItemUpdateimageUrlInput | string[]
     status?: EnumItemStatusFieldUpdateOperationsInput | $Enums.ItemStatus
@@ -9311,6 +9332,7 @@ export namespace Prisma {
   export type ItemUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
+    category?: ItemUpdatecategoryInput | string[]
     description?: NullableStringFieldUpdateOperationsInput | string | null
     imageUrl?: ItemUpdateimageUrlInput | string[]
     status?: EnumItemStatusFieldUpdateOperationsInput | $Enums.ItemStatus
@@ -9838,6 +9860,7 @@ export namespace Prisma {
   export type ItemCountOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
+    category?: SortOrder
     description?: SortOrder
     imageUrl?: SortOrder
     status?: SortOrder
@@ -10385,6 +10408,10 @@ export namespace Prisma {
     deleteMany?: TrustLogScalarWhereInput | TrustLogScalarWhereInput[]
   }
 
+  export type ItemCreatecategoryInput = {
+    set: string[]
+  }
+
   export type ItemCreateimageUrlInput = {
     set: string[]
   }
@@ -10413,6 +10440,11 @@ export namespace Prisma {
     connectOrCreate?: BorrowCreateOrConnectWithoutItemInput | BorrowCreateOrConnectWithoutItemInput[]
     createMany?: BorrowCreateManyItemInputEnvelope
     connect?: BorrowWhereUniqueInput | BorrowWhereUniqueInput[]
+  }
+
+  export type ItemUpdatecategoryInput = {
+    set?: string[]
+    push?: string | string[]
   }
 
   export type ItemUpdateimageUrlInput = {
@@ -10939,6 +10971,7 @@ export namespace Prisma {
 
   export type ItemCreateWithoutOwnerInput = {
     name: string
+    category?: ItemCreatecategoryInput | string[]
     description?: string | null
     imageUrl?: ItemCreateimageUrlInput | string[]
     status?: $Enums.ItemStatus
@@ -10953,6 +10986,7 @@ export namespace Prisma {
   export type ItemUncheckedCreateWithoutOwnerInput = {
     id?: number
     name: string
+    category?: ItemCreatecategoryInput | string[]
     description?: string | null
     imageUrl?: ItemCreateimageUrlInput | string[]
     status?: $Enums.ItemStatus
@@ -11101,6 +11135,7 @@ export namespace Prisma {
     NOT?: ItemScalarWhereInput | ItemScalarWhereInput[]
     id?: IntFilter<"Item"> | number
     name?: StringFilter<"Item"> | string
+    category?: StringNullableListFilter<"Item">
     description?: StringNullableFilter<"Item"> | string | null
     imageUrl?: StringNullableListFilter<"Item">
     status?: EnumItemStatusFilter<"Item"> | $Enums.ItemStatus
@@ -11386,6 +11421,7 @@ export namespace Prisma {
 
   export type ItemCreateWithoutCommunityInput = {
     name: string
+    category?: ItemCreatecategoryInput | string[]
     description?: string | null
     imageUrl?: ItemCreateimageUrlInput | string[]
     status?: $Enums.ItemStatus
@@ -11400,6 +11436,7 @@ export namespace Prisma {
   export type ItemUncheckedCreateWithoutCommunityInput = {
     id?: number
     name: string
+    category?: ItemCreatecategoryInput | string[]
     description?: string | null
     imageUrl?: ItemCreateimageUrlInput | string[]
     status?: $Enums.ItemStatus
@@ -11671,6 +11708,7 @@ export namespace Prisma {
 
   export type ItemCreateWithoutBorrowRecordsInput = {
     name: string
+    category?: ItemCreatecategoryInput | string[]
     description?: string | null
     imageUrl?: ItemCreateimageUrlInput | string[]
     status?: $Enums.ItemStatus
@@ -11685,6 +11723,7 @@ export namespace Prisma {
   export type ItemUncheckedCreateWithoutBorrowRecordsInput = {
     id?: number
     name: string
+    category?: ItemCreatecategoryInput | string[]
     description?: string | null
     imageUrl?: ItemCreateimageUrlInput | string[]
     status?: $Enums.ItemStatus
@@ -11796,6 +11835,7 @@ export namespace Prisma {
 
   export type ItemUpdateWithoutBorrowRecordsInput = {
     name?: StringFieldUpdateOperationsInput | string
+    category?: ItemUpdatecategoryInput | string[]
     description?: NullableStringFieldUpdateOperationsInput | string | null
     imageUrl?: ItemUpdateimageUrlInput | string[]
     status?: EnumItemStatusFieldUpdateOperationsInput | $Enums.ItemStatus
@@ -11810,6 +11850,7 @@ export namespace Prisma {
   export type ItemUncheckedUpdateWithoutBorrowRecordsInput = {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
+    category?: ItemUpdatecategoryInput | string[]
     description?: NullableStringFieldUpdateOperationsInput | string | null
     imageUrl?: ItemUpdateimageUrlInput | string[]
     status?: EnumItemStatusFieldUpdateOperationsInput | $Enums.ItemStatus
@@ -11900,6 +11941,7 @@ export namespace Prisma {
   export type ItemCreateManyOwnerInput = {
     id?: number
     name: string
+    category?: ItemCreatecategoryInput | string[]
     description?: string | null
     imageUrl?: ItemCreateimageUrlInput | string[]
     status?: $Enums.ItemStatus
@@ -11946,6 +11988,7 @@ export namespace Prisma {
 
   export type ItemUpdateWithoutOwnerInput = {
     name?: StringFieldUpdateOperationsInput | string
+    category?: ItemUpdatecategoryInput | string[]
     description?: NullableStringFieldUpdateOperationsInput | string | null
     imageUrl?: ItemUpdateimageUrlInput | string[]
     status?: EnumItemStatusFieldUpdateOperationsInput | $Enums.ItemStatus
@@ -11960,6 +12003,7 @@ export namespace Prisma {
   export type ItemUncheckedUpdateWithoutOwnerInput = {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
+    category?: ItemUpdatecategoryInput | string[]
     description?: NullableStringFieldUpdateOperationsInput | string | null
     imageUrl?: ItemUpdateimageUrlInput | string[]
     status?: EnumItemStatusFieldUpdateOperationsInput | $Enums.ItemStatus
@@ -11974,6 +12018,7 @@ export namespace Prisma {
   export type ItemUncheckedUpdateManyWithoutOwnerInput = {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
+    category?: ItemUpdatecategoryInput | string[]
     description?: NullableStringFieldUpdateOperationsInput | string | null
     imageUrl?: ItemUpdateimageUrlInput | string[]
     status?: EnumItemStatusFieldUpdateOperationsInput | $Enums.ItemStatus
@@ -12129,6 +12174,7 @@ export namespace Prisma {
   export type ItemCreateManyCommunityInput = {
     id?: number
     name: string
+    category?: ItemCreatecategoryInput | string[]
     description?: string | null
     imageUrl?: ItemCreateimageUrlInput | string[]
     status?: $Enums.ItemStatus
@@ -12146,6 +12192,7 @@ export namespace Prisma {
 
   export type ItemUpdateWithoutCommunityInput = {
     name?: StringFieldUpdateOperationsInput | string
+    category?: ItemUpdatecategoryInput | string[]
     description?: NullableStringFieldUpdateOperationsInput | string | null
     imageUrl?: ItemUpdateimageUrlInput | string[]
     status?: EnumItemStatusFieldUpdateOperationsInput | $Enums.ItemStatus
@@ -12160,6 +12207,7 @@ export namespace Prisma {
   export type ItemUncheckedUpdateWithoutCommunityInput = {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
+    category?: ItemUpdatecategoryInput | string[]
     description?: NullableStringFieldUpdateOperationsInput | string | null
     imageUrl?: ItemUpdateimageUrlInput | string[]
     status?: EnumItemStatusFieldUpdateOperationsInput | $Enums.ItemStatus
@@ -12174,6 +12222,7 @@ export namespace Prisma {
   export type ItemUncheckedUpdateManyWithoutCommunityInput = {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
+    category?: ItemUpdatecategoryInput | string[]
     description?: NullableStringFieldUpdateOperationsInput | string | null
     imageUrl?: ItemUpdateimageUrlInput | string[]
     status?: EnumItemStatusFieldUpdateOperationsInput | $Enums.ItemStatus

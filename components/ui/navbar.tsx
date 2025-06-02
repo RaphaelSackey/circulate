@@ -15,7 +15,7 @@ export default function Navbar() {
 	const [isSidebarOpen, setSidebarOpen] = useState(false);
 	const pathname = usePathname();
 	const { isPending, isSuccess } = useSignedIn();
-	const router = useRouter();
+	const w = useRouter();
 	const queryClient = useQueryClient();
 
 	// mutation to log user out

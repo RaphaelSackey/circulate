@@ -14,6 +14,7 @@ export type TsessionCookie = {
 export type TaddItmes = {
 	name: string,
 	description: string,
+    category: string[]
     communityId?: string,
     imageUrl: string[],
     latitude: number,

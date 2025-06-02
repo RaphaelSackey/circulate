@@ -61,6 +61,7 @@ export type TaddItmes = {
 	name: string,
 	description: string,
 	location: [string?,string?]
+	category: string[]
 }
 export type TaddItmesfnArg = {
 	data: TaddItmes,
