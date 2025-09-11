@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useLayoutEffect } from "react";
 import MyDropzone from "@/components/ui/imagedropzone";
 import { TaddItmes } from "@/types/C_types";
 import { useMutation } from "@tanstack/react-query";
@@ -9,14 +9,21 @@ import { ErrorAlert } from "@/components/ui/erroralert";
 import { useLocation } from "@/context/location";
 import { LoaderCircle } from "lucide-react";
 import PostItemCategory from "@/components/ui/postitemcategories";
+import { PromptAlert } from "@/components/ui/promptalert";
+import { useRouter } from "next/navigation";
+import useSignedIn from "@/hooks/singedInStatus";
 
 export default function PostItems() {
 	const [images, setImages] = useState<Array<string>>([]);
 	const [alertMessage, setAlertMessage] = useState("");
 	const [showAlert, setShowAlert] = useState(false);
+	const [showPromptAlert, setShowPromptAlert] = useState<boolean>(false);
 	const [selectedFilterItems, setSelectedFilterItems] = useState<string[]>(
 		[]
 	);
+	const router = useRouter()
+	const {isPending: signInPending, isSuccess, data} = useSignedIn()
+
 	const [formData, setFromData] = useState<TaddItmes>({
 		name: "",
 		description: "",
@@ -24,8 +31,12 @@ export default function PostItems() {
 		category: selectedFilterItems,
 	});
 	const { location } = useLocation();
-	console.log(selectedFilterItems);
-
+	
+	useLayoutEffect(()=> {
+		if (!isPending && !isSuccess){
+			router.push('/')
+		}
+	}, [signInPending])
 	// set the location data for the formdata
 	useEffect(() => {
 		if (location !== null) {
@@ -47,6 +58,19 @@ export default function PostItems() {
 		setFromData((prev) => ({ ...prev, [name]: e.target.value }));
 	};
 
+	const resetFormData = () => {
+		setSelectedFilterItems([])
+		setImages([])
+		setFromData(prev => ({
+			...prev,
+			name: '',
+			description: '',
+			category: []
+			
+		}))
+
+	}
+
 	// update the image array to contain attached images
 	const handleImageUpload = (image: string[]) => {
 		setImages((prev) => [...prev, ...image]);
@@ -58,7 +82,10 @@ export default function PostItems() {
 		onError: (e) => {
 			handleAlert("Failed to add item");
 		},
-		onSuccess: (data) => {},
+		onSuccess: (data) => {
+			handlePromptAlert(data.message);
+			resetFormData()
+		},
 	});
 
 	// control the alert ui
@@ -67,6 +94,13 @@ export default function PostItems() {
 		setShowAlert(true);
 		setTimeout(() => {
 			setShowAlert(false);
+		}, 5000);
+	};
+	const handlePromptAlert = (e: string) => {
+		setAlertMessage(e);
+		setShowPromptAlert(true);
+		setTimeout(() => {
+			setShowPromptAlert(false);
 		}, 5000);
 	};
 
@@ -99,7 +133,8 @@ export default function PostItems() {
 	}, [selectedFilterItems]);
 	return (
 		<div className='container mx-auto flex flex-col justify-center items-center'>
-			{showAlert && <ErrorAlert message={alertMessage} />}{" "}
+			{showAlert && <ErrorAlert message={alertMessage} />}
+			{showPromptAlert && <PromptAlert message={alertMessage} />}
 			<div className='text-4xl mb-5 text-center'>
 				Share With Community
 			</div>
