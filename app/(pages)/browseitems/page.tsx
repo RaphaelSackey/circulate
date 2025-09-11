@@ -92,8 +92,19 @@ export default function BrowseItems() {
 							shouldDisplay = false
 						}
 					}
+					// filter items using the filter
+					if (selectedFilterItems.length){
+						shouldDisplay = false
+						const categories = new Set(item.category)
+						for(let i of selectedFilterItems){
+							if (categories.has(i)){
+								shouldDisplay = true
+								break
+							}
+						}
+					}
 					if (item.imageUrl.length > 1){
-						for (let i = 0; i < item.imageUrl.length - 1; i ++ ){
+						for (let i = 0; i < item.imageUrl.length; i ++ ){
 							testimonials.push({
 								name: item.name,
 								distance: String(item.distance),
@@ -122,7 +133,7 @@ export default function BrowseItems() {
 				setCards([<Itmesnotfound key={1}/>])
 			}
 		}
-	},[data, searchWord])
+	},[data, searchWord, selectedFilterItems])
     
 	const toggleItem = (value: string) => {
 		setSelectedFilterItems((prev) =>

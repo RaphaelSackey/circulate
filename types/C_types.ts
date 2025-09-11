@@ -87,7 +87,8 @@ type TitemsNearby = {
 		name: string,
 		imageUrl: string[],
 		description: string,
-		distance: number
+		distance: number,
+		category: string[]
 }
 
 export type TgetItemsFnReturn = {
