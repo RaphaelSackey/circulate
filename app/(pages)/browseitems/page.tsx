@@ -85,24 +85,21 @@ export default function BrowseItems() {
 				const tempCards = data.pages[0].itemsNearby.map(item => {
 					const testimonials: Testimonial[] = []
 					let shouldDisplay = true
-					if (searchWord.length > 0){
+					if (searchWord.length && selectedFilterItems.length){
 						const word = item.name.toLowerCase()
 						const filWord = searchWord.toLowerCase()
-
-						if (!word.includes(filWord)){
-							shouldDisplay = false
-						}
+						shouldDisplay = item.category.some(itr => selectedFilterItems.includes(itr)
+						) && word.includes(filWord)
+					}
+					else if (searchWord.length > 0){
+						const word = item.name.toLowerCase()
+						const filWord = searchWord.toLowerCase()
+						shouldDisplay = word.includes(filWord)
+						
 					}
 					// filter items using the filter
-					if (selectedFilterItems.length){
-						shouldDisplay = false
-						const categories = new Set(item.category)
-						for(let i of selectedFilterItems){
-							if (categories.has(i)){
-								shouldDisplay = true
-								break
-							}
-						}
+					else if (selectedFilterItems.length){
+						shouldDisplay = item.category.some(itr => selectedFilterItems.includes(itr))
 					}
 					if (item.imageUrl.length > 1){
 						for (let i = 0; i < item.imageUrl.length; i ++ ){
