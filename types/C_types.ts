@@ -82,13 +82,14 @@ export type TitemsByCurrentLocation = {
 }
 
 
-type TitemsNearby = {
+export type TitemsNearby = {
 		id: string,
 		name: string,
 		imageUrl: string[],
 		description: string,
 		distance: number,
-		category: string[]
+		category: string[],
+		status: 'AVAILABLE' | 'UNAVAILABLE'
 }
 
 export type TgetItemsFnReturn = {

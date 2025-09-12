@@ -13,10 +13,14 @@ export type Testimonial = {
 	src: string;
 };
 export const ItemCard = ({
+	id,
+	onclick: handleRequest,
 	testimonials,
 	autoplay = false,
 	display = true
 }: {
+	id: string,
+	onclick: (id:string) => void
 	testimonials: Testimonial[];
 	autoplay?: boolean;
 	display: boolean
@@ -55,7 +59,7 @@ export const ItemCard = ({
 	}
 	
 	return (
-		display? <div className='relative px-2 py-2 antialiased border rounded-lg '>
+		display? <div className='relative px-2 py-2 antialiased border rounded-lg transform transition-transform duration-300  hover:scale-105'>
 			
 			{/* Highlight behind card
 			<div className='absolute inset-0 top-3 right-3 flex items-center justify-center z-0'>
@@ -138,7 +142,7 @@ export const ItemCard = ({
 					</div>
 				</div>
 			</div>
-			<button className="absolute right-2 bottom-1 bg-blue-600 px-7 py-2 rounded text-white">Request</button>
+			<button className="absolute right-2 bottom-1 bg-blue-600 px-7 py-2 rounded text-white hover:cursor-pointer" onClick={() => handleRequest(id)}>Request</button>
 		</div> : ""
 	);
 };

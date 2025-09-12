@@ -48,8 +48,10 @@ export async function getItems({
 				id: number;
 				name: string;
 				imageUrl: string[];
+				description: string;
 				distance: number;
 				category: string[];
+				status: string
 			}>
 		>(Prisma.sql`
 			SELECT 
@@ -61,7 +63,8 @@ export async function getItems({
 					ST_MakePoint(${longitude}::double precision, ${latitude}::double precision),
 					ST_MakePoint(longitude, latitude)
 				) AS distance,
-				category
+				category,
+				status
 			FROM "Item"
 			WHERE
 				ST_DistanceSphere(
