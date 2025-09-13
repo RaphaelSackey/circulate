@@ -1,8 +1,13 @@
 "use client";
 
 import { motion, AnimatePresence } from "motion/react";
-import { ArrowLeft as IconArrowLeft ,ArrowRight as IconArrowRight, Dot } from "lucide-react";
+import {
+	ArrowLeft as IconArrowLeft,
+	ArrowRight as IconArrowRight,
+	Dot,
+} from "lucide-react";
 import Image from "next/image";
+import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 
 import { useEffect, useState } from "react";
 
@@ -17,13 +22,15 @@ export const ItemCard = ({
 	onclick: handleRequest,
 	testimonials,
 	autoplay = false,
-	display = true
+	display = true,
+	status,
 }: {
-	id: string,
-	onclick: (id:string) => void
+	id: string;
+	onclick: (id: string) => void;
 	testimonials: Testimonial[];
 	autoplay?: boolean;
-	display: boolean
+	display: boolean;
+	status: 'AVAILABLE' | 'PENDING'
 }) => {
 	const [active, setActive] = useState(0);
 	const [onClient, setOnClient] = useState(false);
@@ -52,20 +59,14 @@ export const ItemCard = ({
 	const randomRotateY = () => {
 		return Math.floor(Math.random() * 21) - 10;
 	};
-	useEffect(() => setOnClient(true),[])
-	
-	if (!onClient){
-		return <div></div>
+	useEffect(() => setOnClient(true), []);
+
+	if (!onClient) {
+		return <div></div>;
 	}
-	
-	return (
-		display? <div className='relative px-2 py-2 antialiased border rounded-lg transform transition-transform duration-300  hover:scale-105'>
-			
-			{/* Highlight behind card
-			<div className='absolute inset-0 top-3 right-3 flex items-center justify-center z-0'>
-				<div className='w-full h-full rounded-lg bg-gradient-to-br from-emerald-400 via-blue-500 to-purple-500  blur-sm opacity-30' />
-			</div> */}
-			
+
+	return display ? (
+		<div className='h-56 relative px-2 py-4 antialiased border rounded-lg transform transition-transform duration-300  hover:scale-105'>
 			<div className='relative grid grid-cols-2 gap-5 h-full'>
 				<div>
 					<div className='relative h-full w-full'>
@@ -124,9 +125,7 @@ export const ItemCard = ({
 						</p>
 						<div className='text-lg text-gray-500 dark:text-neutral-300'>
 							{testimonials[active].distance}
-								
 						</div>
-						
 					</div>
 					<div className='flex gap-4 pt-12 md:pt-0'>
 						<button
@@ -142,7 +141,20 @@ export const ItemCard = ({
 					</div>
 				</div>
 			</div>
-			<button className="absolute right-2 bottom-1 bg-blue-600 px-7 py-2 rounded text-white hover:cursor-pointer" onClick={() => handleRequest(id)}>Request</button>
-		</div> : ""
+			{status === 'AVAILABLE' ? <button
+				className='absolute right-2 bottom-1 bg-blue-600 px-7 py-2 rounded text-white hover:cursor-pointer'
+				onClick={() => handleRequest(id)}>
+				Request
+			</button>:
+			<div className="h-10 w-10 absolute right-2 bottom-1">
+				<DotLottieReact
+					src='/animations/Loading checkmark.lottie'
+					autoplay
+				
+				/>
+			</div>}
+		</div>
+	) : (
+		""
 	);
 };

@@ -89,7 +89,7 @@ export type TitemsNearby = {
 		description: string,
 		distance: number,
 		category: string[],
-		status: 'AVAILABLE' | 'UNAVAILABLE'
+		status: 'AVAILABLE' | 'PENDING'
 }
 
 export type TgetItemsFnReturn = {

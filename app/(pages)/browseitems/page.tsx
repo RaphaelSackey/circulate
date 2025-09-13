@@ -18,37 +18,36 @@ import { handleRequestItem } from "@/actions/client/C_data_interractions_actions
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { TitemsNearby } from "@/types/C_types";
 
+// Main component for browsing items
 export default function BrowseItems() {
-	const [searchWord, setSearchWord] = useState("");
-	const [selectedFilterItems, setSelectedFilterItems] = useState<string[]>(
-		[]
-	);
-	const [showPromptAlert, setShowPromptAlert] = useState(false);
-	const [cards, setCards] = useState<ReactElement[]>([]);
-	const router = useRouter();
-	const queryClient = useQueryClient();
+	const [searchWord, setSearchWord] = useState(""); // State for search input
+	const [selectedFilterItems, setSelectedFilterItems] = useState<string[]>([]); // State for selected filters
+	const [showPromptAlert, setShowPromptAlert] = useState(false); // State for location prompt alert
+	const [cards, setCards] = useState<ReactElement[]>([]); // State for rendered item cards
+	const router = useRouter(); // Next.js router
+	const queryClient = useQueryClient(); // React Query client
 	const [queryData, setQueryData] = useState({
 		longitude: 0,
 		latitude: 0,
 		searchQuery: "",
-	});
+	}); // State for query parameters
 
 	const {
 		location,
 		isLoading: locationLoading,
 		error,
 		requestLocation,
-	} = useLocation();
+	} = useLocation(); // Custom hook for location
 
-	const skel = [...Array(5).keys()].map((cur) => <Skeleton key={cur} />);
-	const { data: signInData, isPending, isSuccess } = useSignedIn();
+	const skel = [...Array(5).keys()].map((cur) => <Skeleton key={cur} />); // Skeleton loading placeholders
+	const { data: signInData, isPending, isSuccess } = useSignedIn(); // Custom hook for sign-in status
 
-	// update setQueryData when user is typing in the search bar
+	// Update search query in queryData when searchWord changes
 	useEffect(() => {
 		setQueryData((prev) => ({ ...prev, searchQuery: searchWord }));
 	}, [searchWord]);
 
-	// set the long and lat of the querydata
+	// Update latitude and longitude in queryData when location changes
 	useEffect(() => {
 		if (location) {
 			setQueryData((prev) => ({
@@ -61,7 +60,7 @@ export default function BrowseItems() {
 
 	console.log("selected", selectedFilterItems);
 
-	// infinite scroll query
+	// Infinite scroll query for items near current location
 	const isReady = queryData.latitude !== 0 && queryData.longitude !== 0;
 	const { data, fetchNextPage, hasNextPage, isFetchingNextPage, status } =
 		useInfiniteQuery({
@@ -77,13 +76,14 @@ export default function BrowseItems() {
 			retry: false,
 		});
 
+	// Redirect to home if user is not signed in
 	useLayoutEffect(() => {
 		if (!isPending && !isSuccess) {
 			router.push("/");
 		}
 	}, [isPending]);
 
-	// a mutation to request items
+	// Mutation for requesting an item
 	const {
 		data: requestItemReturnData,
 		mutate: requestItmesMutation,
@@ -98,7 +98,7 @@ export default function BrowseItems() {
 				"itemsData",
 			]);
 
-			// Optimistically update the item status
+			// Optimistically update the item status to PENDING
 			queryClient.setQueryData(["itemsData"], (oldData: any) => {
 				if (!oldData) return oldData;
 
@@ -109,7 +109,7 @@ export default function BrowseItems() {
 						itemsNearby: page.itemsNearby.map(
 							(item: TitemsNearby) =>
 								item.id === id
-									? { ...item, status: "UNAVAILABLE" } // create a new object with updated status
+									? { ...item, status: "PENDING" }
 									: item
 						),
 					})),
@@ -118,9 +118,10 @@ export default function BrowseItems() {
 			return { previousCardData };
 		},
 		retry: false,
-		onError: () => {
-			console.log("there was an error requesting your item");
+		onError: (err, newTodo, context) => {
+			queryClient.setQueryData(['itemsData'], context?.previousCardData)
 		},
+		// onSettled: () => queryClient.invalidateQueries({ queryKey: ['itemsData'] }),
 		onSuccess: (data, variables, context) => {
 			if (!data.success) {
 				console.log("failed to request item --- component page");
@@ -130,12 +131,14 @@ export default function BrowseItems() {
 		},
 	});
 
+	// Update cards when data, searchWord, or selectedFilterItems change
 	useEffect(() => {
 		if (data?.pages[0].success) {
 			if (data.pages[0].itemsNearby.length) {
 				const tempCards = data.pages[0].itemsNearby.map((item) => {
 					const testimonials: Testimonial[] = [];
 					let shouldDisplay = true;
+					// Filter logic: both search and filter selected
 					if (searchWord.length && selectedFilterItems.length) {
 						const word = item.name.toLowerCase();
 						const filWord = searchWord.toLowerCase();
@@ -144,16 +147,18 @@ export default function BrowseItems() {
 								selectedFilterItems.includes(itr)
 							) && word.includes(filWord);
 					} else if (searchWord.length > 0) {
+						// Only search word
 						const word = item.name.toLowerCase();
 						const filWord = searchWord.toLowerCase();
 						shouldDisplay = word.includes(filWord);
 					}
-					// filter items using the filter
+					// Only filter selected
 					else if (selectedFilterItems.length) {
 						shouldDisplay = item.category.some((itr) =>
 							selectedFilterItems.includes(itr)
 						);
 					}
+					// Build testimonials for item images
 					if (item.imageUrl.length > 1) {
 						for (let i = 0; i < item.imageUrl.length; i++) {
 							testimonials.push({
@@ -171,6 +176,7 @@ export default function BrowseItems() {
 								display={shouldDisplay}
 								id={item.id}
 								onclick={requestItmesMutation}
+								status={item.status}
 							/>
 						);
 					} else {
@@ -189,18 +195,20 @@ export default function BrowseItems() {
 								display={shouldDisplay}
 								id={item.id}
 								onclick={requestItmesMutation}
+œ								status={item.status}
 							/>
 						);
 					}
 				});
 
-				setCards(tempCards);
+				setCards(tempCards); // Set rendered cards
 			} else {
-				setCards([<Itmesnotfound key={1} />]);
+				setCards([<Itmesnotfound key={1} />]); // Show not found if no items
 			}
 		}
 	}, [data, searchWord, selectedFilterItems]);
 
+	// Toggle filter selection
 	const toggleItem = (value: string) => {
 		setSelectedFilterItems((prev) =>
 			prev.includes(value)
@@ -209,6 +217,7 @@ export default function BrowseItems() {
 		);
 	};
 
+	// Show location prompt if location is not available and not shown before
 	useEffect(() => {
 		const hasSeenPrompt = sessionStorage.getItem("locationPromptShown");
 		if (location === null && !hasSeenPrompt) {
@@ -217,22 +226,26 @@ export default function BrowseItems() {
 		}
 	}, [location]);
 
+	// Debug function for search filter (currently unused)
 	function searchFilter() {
 		console.log(data?.pages[0].itemsNearby);
 		if (data?.pages[0].itemsNearby) {
 		}
 	}
 
+	// Handler for allowing location access
 	const handleAllowLocationAccess = () => {
 		requestLocation();
 		setShowPromptAlert(false);
 	};
+	// Handler for denying location access
 	const handleDenyLocationAccess = () => {
 		setShowPromptAlert(false);
 	};
 
 	return (
 		<div className='container mx-auto flex flex-col gap-5'>
+			{/* Show location prompt alert if needed */}
 			{showPromptAlert && (
 				<PromptAlert
 					message='Location access is needed to be able to view items near you'
@@ -240,7 +253,7 @@ export default function BrowseItems() {
 					rejectfn={handleDenyLocationAccess}
 				/>
 			)}
-			{/* filter and add items buttons */}
+			{/* Filter and post item buttons */}
 			<div className='flex justify-end items-center gap-2 mt-6'>
 				<DropdownMenuCheckboxes
 					toggleItem={toggleItem}
@@ -253,7 +266,7 @@ export default function BrowseItems() {
 				</Link>
 			</div>
 
-			{/* searchbar */}
+			{/* Search bar */}
 			<div className='relative'>
 				<form className='w-full'>
 					<Search className='absolute top-2.5 left-4' />
@@ -270,7 +283,7 @@ export default function BrowseItems() {
 				</form>
 			</div>
 
-			{/* items near by */}
+			{/* Items nearby section */}
 			<div>
 				<h1 className='text-lg'>
 					Location:{" "}

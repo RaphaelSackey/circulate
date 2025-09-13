@@ -91,3 +91,42 @@ export async function getItems({
 		throw e;
 	}
 }
+
+export async function requestItem(itemId: number, borrowerId: string): Promise<boolean> {
+	try {
+		// Step 1: Find the item
+		const item = await prisma.item.findUnique({
+			where: { id: itemId },
+		});
+
+		if (!item) {
+			throw new Error("Item not found");
+		}
+
+		if (item.status !== "AVAILABLE") {
+			throw new Error("Item is not available");
+		}
+
+		// Step 2: Create a borrow record
+		await prisma.borrow.create({
+			data: {
+				itemId: itemId,
+				borrowerId: borrowerId,
+				ownerId: item.ownerId, // owner of the item
+				status: "REQUESTED",
+			},
+		});
+
+		// Step 3: Update the item status to PENDING
+		const here = await prisma.item.update({
+			where: { id: itemId },
+			data: { status: "PENDING" },
+		});
+
+		console.log(here)
+		return true;
+	} catch (e) {
+		console.error(e);
+		return false;
+	}
+}

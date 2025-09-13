@@ -1,17 +1,17 @@
 import {
+	TcheckSignIn,
+	TlogIn,
+	TrequestSessionData,
+	TsessionCookieResponse,
+	TsignUp,
+} from "@/types/C_types";
+import { FirebaseError } from "firebase/app";
+import {
 	createUserWithEmailAndPassword,
 	deleteUser,
 	signInWithEmailAndPassword,
 } from "firebase/auth";
-import { FirebaseError } from "firebase/app";
 import { auth } from "../../services/client/C_firebase";
-import {
-	TsignUp,
-	TsessionCookieResponse,
-	TcheckSignIn,
-	TlogIn,
-	TrequestSessionData,
-} from "@/types/C_types";
 
 // request a cookie from the server
 async function getSessionCookie(

@@ -52,7 +52,7 @@ export async function getItemsByCurrentLocation({
 		}
 
 		const { success, itemsNearby, nextBatch } = await response.json();
-		// console.log('get items',{success, itemsNearby, nextBatch})
+		console.log('get items',{success, itemsNearby, nextBatch})
 		return { success, itemsNearby, nextBatch };
 	} catch (e) {
 		throw e;
