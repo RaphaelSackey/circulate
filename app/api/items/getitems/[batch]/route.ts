@@ -31,6 +31,7 @@ export async function POST(
 
 	// logic for getting the items by the distance
     try{
+		console.log('trying', {longitude:info.longitude, latitude:info.latitude, searchQuery:info.searchQuery, batch:batch})
         const {success, itemsNearby, nextt} = await getItems({longitude:info.longitude, latitude:info.latitude, searchQuery:info.searchQuery, batch:batch} )
         let nextBatch = null
         if (nextt){

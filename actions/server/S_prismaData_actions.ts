@@ -38,7 +38,7 @@ export async function getItems({
 	const MILES = 2;
 	const METERS = MILES * 1609.34;
 	const limit = 10;
-	const offset = (Number(batch) - 1) * limit;
+	const offset = (Number(batch) - 1);
 
 	const hasSearch = !!searchQuery?.trim();
 

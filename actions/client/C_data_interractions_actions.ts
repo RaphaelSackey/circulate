@@ -75,6 +75,7 @@ export async function handleRequestItem(
     
 		return { success: true };
 	} catch (error) {
-		return { success: false, message: (error as Error).message };
+		// return { success: false, message: (error as Error).message };
+		throw error
 	}
 }
