@@ -30,7 +30,7 @@ export const ItemCard = ({
 	testimonials: Testimonial[];
 	autoplay?: boolean;
 	display: boolean;
-	status: 'AVAILABLE' | 'PENDING'
+	status: "AVAILABLE" | "PENDING";
 }) => {
 	const [active, setActive] = useState(0);
 	const [onClient, setOnClient] = useState(false);
@@ -108,6 +108,7 @@ export const ItemCard = ({
 										alt={testimonial.name}
 										priority
 										fill
+										sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
 										className='h-full w-full rounded-3xl object-cover object-center'
 									/>
 								</motion.div>
@@ -141,18 +142,20 @@ export const ItemCard = ({
 					</div>
 				</div>
 			</div>
-			{status === 'AVAILABLE' ? <button
-				className='absolute right-2 bottom-1 bg-blue-600 px-7 py-2 rounded text-white hover:cursor-pointer'
-				onClick={() => handleRequest(id)}>
-				Request
-			</button>:
-			<div className="h-10 w-10 absolute right-2 bottom-1">
-				<DotLottieReact
-					src='/animations/Loading checkmark.lottie'
-					autoplay
-				
-				/>
-			</div>}
+			{status === "AVAILABLE" ? (
+				<button
+					className='absolute right-2 bottom-1 bg-blue-600 px-7 py-2 rounded text-white hover:cursor-pointer'
+					onClick={() => handleRequest(id)}>
+					Request
+				</button>
+			) : (
+				<div className='h-10 w-10 absolute right-2 bottom-1'>
+					<DotLottieReact
+						src='/animations/Loading checkmark.lottie'
+						autoplay
+					/>
+				</div>
+			)}
 		</div>
 	) : (
 		""

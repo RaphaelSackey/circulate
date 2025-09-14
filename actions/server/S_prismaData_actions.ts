@@ -38,7 +38,7 @@ export async function getItems({
 	const MILES = 2;
 	const METERS = MILES * 1609.34;
 	const limit = 10;
-	const offset = (Number(batch) - 1);
+	const offset = (Number(batch) - 1) * limit;
 
 	const hasSearch = !!searchQuery?.trim();
 
@@ -77,7 +77,7 @@ export async function getItems({
 						? Prisma.sql`AND name ILIKE ${"%" + searchQuery + "%"}`
 						: Prisma.empty
 				}
-			ORDER BY distance ASC
+			ORDER BY distance ASC, id ASC
 			LIMIT ${limit}
 			OFFSET ${offset};
 		`);
@@ -85,7 +85,7 @@ export async function getItems({
 		return {
 			success: true,
 			itemsNearby: items,
-			nextt: items.length === limit ? batch + 1 : null,
+			nextt: items.length === limit ? Number(batch) + 1 : null,
 		};
 	} catch (e) {
 		throw e;

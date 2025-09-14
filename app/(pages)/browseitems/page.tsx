@@ -24,12 +24,16 @@ import { handleRequestItem } from "@/actions/client/C_data_interractions_actions
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { TitemsNearby } from "@/types/C_types";
 import { ErrorAlert } from "@/components/ui/erroralert";
+import { useInView } from "react-intersection-observer";
+
 
 export default function BrowseItems() {
 	// State for search input
 	const [searchWord, setSearchWord] = useState("");
 	// State for selected filter items
-	const [selectedFilterItems, setSelectedFilterItems] = useState<string[]>([]);
+	const [selectedFilterItems, setSelectedFilterItems] = useState<string[]>(
+		[]
+	);
 	// State for location prompt alert
 	const [showPromptAlert, setShowPromptAlert] = useState(false);
 	const router = useRouter();
@@ -54,6 +58,10 @@ export default function BrowseItems() {
 	// Skeleton loader for initial loading
 	const skel = [...Array(5).keys()].map((cur) => <Skeleton key={cur} />);
 	const { data: signInData, isPending, isSuccess } = useSignedIn();
+
+	const { ref: scrollSentinelRef, inView } = useInView({
+		threshold: 1,
+	});
 
 	// Update search query in queryData when searchWord changes
 	useEffect(() => {
@@ -143,6 +151,12 @@ export default function BrowseItems() {
 			}
 		},
 	});
+	// fetch next data when the scroll sentinel div come in view
+	useEffect(() => {
+		if (inView && hasNextPage && !isFetchingNextPage) {
+			fetchNextPage();
+		}
+	}, [inView]);
 
 	// Memoized item cards based on filters and search
 	const cards = useMemo(() => {
@@ -291,11 +305,8 @@ export default function BrowseItems() {
 				{hasNextPage && (
 					<div>
 						{/* Load more items */}
-						<button
-							onClick={() => fetchNextPage()}
-							className='bg-blue-500 flex px-16 py-'>
-							Load More
-						</button>
+						{isFetchingNextPage && <div className="flex items-center justify-center text-2xl mt-4">Fetching...</div>}
+						<div ref={scrollSentinelRef} className="h-14"></div>
 					</div>
 				)}
 			</div>
