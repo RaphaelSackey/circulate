@@ -1,6 +1,7 @@
 import { TaddItmes, TgetItems } from "@/types/S_types";
 import { prisma } from "@/services/server/S_postgress";
 import { Prisma } from "@/generated/prisma";
+import { tree } from "next/dist/build/templates/app-page";
 
 export async function addItem(data: TaddItmes): Promise<boolean> {
 	console.log(data);
@@ -135,14 +136,19 @@ export async function requestItem(
 }
 
 export async function getUserItems(id: string) {
-	try{
-		const items = await prisma.item.findMany({
-			where: { ownerId: id },
+	try {
+		const data = await prisma.user.findFirst({
+			where: { uid: id },
+			select: {
+				trustScore: true,
+				items: {select:{id:true, name:true, imageUrl:true, status: true, createdAt: true}},
+				// userCommunities: true,
+			},
 		});
 
-		console.log(items)
-		return items;
-	}catch(e){
-		throw new Error
+		// console.log(data);
+		return data;
+	} catch (e) {
+		throw new Error();
 	}
 }

@@ -3,6 +3,7 @@ import {
 	TaddItmesfnArg,
 	TitemsByCurrentLocation,
 	TgetItemsFnReturn,
+	TgetUserItemsFnReturn,
 } from "@/types/C_types";
 
 export async function getItemsNearby() {}
@@ -80,7 +81,7 @@ export async function handleRequestItem(
 	}
 }
 
-export async function requestUserSpecificItemsData() {
+export async function requestUserSpecificItemsData():Promise <TgetUserItemsFnReturn> {
 	console.log("fetching user data");
 
 	try {
@@ -93,10 +94,9 @@ export async function requestUserSpecificItemsData() {
 			throw new Error("something went wrong");
 		}
 
-		const data = await response.json();
-		console.log("it worked");
-		return { success: true, data: data };
+		const data:TgetUserItemsFnReturn = await response.json();
+		return data;
 	} catch (e) {
-		return { success: false };
+		throw e;
 	}
 }

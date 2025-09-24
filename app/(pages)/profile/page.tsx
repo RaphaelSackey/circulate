@@ -6,7 +6,7 @@ import ProfileItemCard from "@/components/ui/profileItemCard";
 import ProfileCommunityCard from "@/components/ui/profileCommunityCard";
 import { useQuery } from "@tanstack/react-query";
 import { requestUserSpecificItemsData } from "@/actions/client/C_data_interractions_actions";
-
+import { useMemo, useState } from "react";
 
 export default function Profile() {
 	// edit profile logic
@@ -14,8 +14,8 @@ export default function Profile() {
 		console.log("edit profile has been clicked");
 	}
 
-	function removeItemHandler(){
-		console.log('remove item clicked')
+	function removeItemHandler() {
+		console.log("remove item clicked");
 	}
 
 	// Sample testimonials input
@@ -26,17 +26,67 @@ export default function Profile() {
 			description: "Great experience borrowing this item!",
 			src: "/assets/headshot.jpg",
 		},
-	
 	];
-
 
 	// data fetching queries
 
-	const { isPending, error, data: UserItemsData, isFetching } = useQuery({
-    queryKey: ['ItemsData'],
-    queryFn: requestUserSpecificItemsData
-	})
+	const {
+		isPending: isPendingUserItemsDataFetch,
+		isSuccess: isSuccessUserItemsDataFetch,
+		data: UserItemsData,
+		isFetching: isFetchingUserItemsDataFetch,
+	} = useQuery({
+		queryKey: ["UserItemsData"],
+		queryFn: requestUserSpecificItemsData,
+	});
 
+	// ItemsDataFetch UI control logic
+	if (!isPendingUserItemsDataFetch && !isSuccessUserItemsDataFetch) {
+		console.log("failed to fetch user data");
+	}
+
+	// Filter state for item status
+	const [itemStatusFilter, setItemStatusFilter] = useState<
+		"ALL" | "AVAILABLE" | "PENDING"
+	>("ALL");
+
+	// ItemsDataFetch result actions
+	const myItmesDataCards = useMemo(() => {
+		if (!isPendingUserItemsDataFetch && isSuccessUserItemsDataFetch) {
+			const filteredItems =
+				itemStatusFilter === "ALL"
+					? UserItemsData.items
+					: UserItemsData.items.filter(
+							(item) => item.status === itemStatusFilter
+					  );
+
+			const cards = filteredItems.map((item) => (
+				<ProfileItemCard
+					id={item.id}
+					removeItemHandler={removeItem}
+					status={item.status}
+					imageUrl={item.imageUrl.length ? item.imageUrl[0] : ""}
+					name={item.name}
+					date={item.createdAt}
+					key={item.id}
+				/>
+			));
+			return cards;
+		} else {
+			return [];
+		}
+	}, [
+		isPendingUserItemsDataFetch,
+		isSuccessUserItemsDataFetch,
+		UserItemsData,
+		itemStatusFilter,
+	]);
+
+	// Item card interaction functions
+
+	function removeItem(id: number) {
+		console.log("item removed");
+	}
 
 	return (
 		<div className='container mx-auto my-10 px-4 h-[100vh]'>
@@ -92,10 +142,8 @@ export default function Profile() {
 
 			<div className='md:grid md:grid-cols-2 md:h-[70vh] mt-12'>
 				<div className='w-full md:pr-10'>
-					<h1 className='text-3xl'>
-						My Communities
-					</h1>
-					<div className="border h-[30vh] max-h-[30vh] mt-5 rounded-lg overflow-scroll">
+					<h1 className='text-3xl'>My Communities</h1>
+					<div className='border h-[30vh] max-h-[30vh] mt-5 rounded-lg overflow-scroll'>
 						<ProfileCommunityCard />
 						<ProfileCommunityCard />
 						<ProfileCommunityCard />
@@ -107,58 +155,44 @@ export default function Profile() {
 						<ProfileCommunityCard />
 						<ProfileCommunityCard />
 					</div>
-					
-					<h1 className="mt-10 text-3xl">My Borrowed Items</h1>
-					<div className="border h-[20vh] mt-6 rounded-lg overflow-scroll">
-						<ProfileItemCard
-							id="1"
-							status="AVAILABLE"
-							removeItemHandler={removeItemHandler}
-							testimonials={sampleTestimonials}
-						/>
-					</div>
+
+					<h1 className='mt-10 text-3xl'>My Borrowed Items</h1>
+					<div className='border h-[20vh] mt-6 rounded-lg overflow-scroll'></div>
 				</div>
 				<div className='w-full md:pl-10'>
-					<h1 className='text-3xl'>
-						My Items
-					</h1>
-					<div className="border h-[40vh] max-h-[40vh] mt-5 rounded-lg overflow-scroll">
-						<ProfileItemCard
-							id="1"
-							status="AVAILABLE"
-							removeItemHandler={removeItemHandler}
-							testimonials={sampleTestimonials}
-						/>
-						<ProfileItemCard
-							id="1"
-							status="AVAILABLE"
-							removeItemHandler={removeItemHandler}
-							testimonials={sampleTestimonials}
-						/>
-						<ProfileItemCard
-							id="1"
-							status="AVAILABLE"
-							removeItemHandler={removeItemHandler}
-							testimonials={sampleTestimonials}
-						/>
-						<ProfileItemCard
-							id="1"
-							status="AVAILABLE"
-							removeItemHandler={removeItemHandler}
-							testimonials={sampleTestimonials}
-						/>
-						<ProfileItemCard
-							id="1"
-							status="AVAILABLE"
-							removeItemHandler={removeItemHandler}
-							testimonials={sampleTestimonials}
-						/>
-						<ProfileItemCard
-							id="1"
-							status="AVAILABLE"
-							removeItemHandler={removeItemHandler}
-							testimonials={sampleTestimonials}
-						/>
+					<h1 className='text-3xl'>My Items</h1>
+					{/* Filter UI */}
+					<div className='flex justify-end gap-2 mt-2 mb-2'>
+						<button
+							className={`px-3 py-1 rounded border hover:cursor-pointer ${
+								itemStatusFilter === "ALL"
+									? "bg-blue-600 text-white"
+									: "bg-background"
+							}`}
+							onClick={() => setItemStatusFilter("ALL")}>
+							All
+						</button>
+						<button
+							className={`px-3 py-1 rounded border hover:cursor-pointer ${
+								itemStatusFilter === "AVAILABLE"
+									? "bg-blue-600 text-white"
+									: "bg-background"
+							}`}
+							onClick={() => setItemStatusFilter("AVAILABLE")}>
+							Available
+						</button>
+						<button
+							className={`px-3 py-1 rounded border hover:cursor-pointer ${
+								itemStatusFilter === "PENDING"
+									? "bg-blue-600 text-white"
+									: "bg-background"
+							}`}
+							onClick={() => setItemStatusFilter("PENDING")}>
+							Requested
+						</button>
+					</div>
+					<div className='border h-[40vh] max-h-[40vh] mt-5 rounded-lg overflow-scroll'>
+						{myItmesDataCards}
 					</div>
 				</div>
 			</div>

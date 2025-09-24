@@ -21,25 +21,24 @@ export type TsessionCookieResponse =
 	| { status: true; data: TsessionResponseData }
 	| { status: false; e: unknown };
 
+export type TcheckSignIn = {
+	status: boolean;
+	uid: string;
+};
 
-export type TcheckSignIn ={
-	status: boolean,
-	uid: string,
-}
-
-export type TrequestSessionData ={
-	success: boolean, 
-	message: string, 
-	data: string,
-}
+export type TrequestSessionData = {
+	success: boolean;
+	message: string;
+	data: string;
+};
 
 export type TitemCard = {
-	imgUrl: string,
-	name: string,
-	description: string,
-	distance: string,
-	status: 'Available' | 'Unavailable'
-}
+	imgUrl: string;
+	name: string;
+	description: string;
+	distance: string;
+	status: "Available" | "Unavailable";
+};
 
 export type TitemCategoryLabel =
 	| "Electronics"
@@ -56,44 +55,57 @@ export type TitemCategoryLabel =
 	| "Musical Instruments"
 	| "Bikes & Mobility";
 
-
 export type TaddItmes = {
-	name: string,
-	description: string,
-	location: [string?,string?]
-	category: string[]
-}
+	name: string;
+	description: string;
+	location: [string?, string?];
+	category: string[];
+};
 export type TaddItmesfnArg = {
-	data: TaddItmes,
-	images: string[]
-}
-
-
+	data: TaddItmes;
+	images: string[];
+};
 
 export type TaddItmesFnReturn = {
-	success: boolean,
-	message: string
-}
+	success: boolean;
+	message: string;
+};
 
 export type TitemsByCurrentLocation = {
-	longitude: number,
-	latitude: number,
-	searchQuery: string
-}
-
+	longitude: number;
+	latitude: number;
+	searchQuery: string;
+};
 
 export type TitemsNearby = {
-		id: string,
-		name: string,
-		imageUrl: string[],
-		description: string,
-		distance: number,
-		category: string[],
-		status: 'AVAILABLE' | 'PENDING'
-}
+	id: string;
+	name: string;
+	imageUrl: string[];
+	description: string;
+	distance: number;
+	category: string[];
+	status: "AVAILABLE" | "PENDING";
+};
 
 export type TgetItemsFnReturn = {
-	success: boolean, 
-	itemsNearby: TitemsNearby[] , 
-	nextBatch: any
-}
+	success: boolean;
+	itemsNearby: TitemsNearby[];
+	nextBatch: any;
+};
+
+type miniUserItemsData = {
+	id: number;
+
+	name: string;
+
+	imageUrl: string[];
+
+	status: "AVAILABLE" | "AVAILABLE" | "  PENDING" | " BORROWED" | " RETURNED";
+
+	createdAt: string;
+};
+export type TgetUserItemsFnReturn = {
+	trustScore: number;
+
+	items: miniUserItemsData[];
+};

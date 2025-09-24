@@ -23,9 +23,9 @@ export async function GET(response:NextResponse){
 
     try{
         const userItemsData = await getUserItems(uid)
-        return NextResponse.json({success: true}, { status: 200 })
+        return NextResponse.json(userItemsData, { status: 200 })
     }catch(e){
-        return NextResponse.json({success: false}, { status: 401 });
+        return NextResponse.json('', { status: 401 });
     }
     
 
