@@ -52,7 +52,7 @@ export async function getItemsByCurrentLocation({
 		}
 
 		const { success, itemsNearby, nextBatch } = await response.json();
-		console.log('get items',{success, itemsNearby, nextBatch})
+		console.log("get items", { success, itemsNearby, nextBatch });
 		return { success, itemsNearby, nextBatch };
 	} catch (e) {
 		throw e;
@@ -70,12 +70,33 @@ export async function handleRequestItem(
 		});
 
 		if (!response.ok) {
-			throw new Error( "Item request failed");
+			throw new Error("Item request failed");
 		}
-    
+
 		return { success: true };
 	} catch (error) {
 		// return { success: false, message: (error as Error).message };
-		throw error
+		throw error;
+	}
+}
+
+export async function requestUserSpecificItemsData() {
+	console.log("fetching user data");
+
+	try {
+		const response = await fetch("/api/items/useritems", {
+			method: "GET",
+			headers: { "Content-Type": "application/json" },
+		});
+
+		if (!response.ok) {
+			throw new Error("something went wrong");
+		}
+
+		const data = await response.json();
+		console.log("it worked");
+		return { success: true, data: data };
+	} catch (e) {
+		return { success: false };
 	}
 }

@@ -3,7 +3,7 @@ import { prisma } from "@/services/server/S_postgress";
 import { Prisma } from "@/generated/prisma";
 
 export async function addItem(data: TaddItmes): Promise<boolean> {
-	console.log(data)
+	console.log(data);
 	try {
 		const newItem = await prisma.item.create({
 			data: {
@@ -51,7 +51,7 @@ export async function getItems({
 				description: string;
 				distance: number;
 				category: string[];
-				status: string
+				status: string;
 			}>
 		>(Prisma.sql`
 			SELECT 
@@ -92,7 +92,10 @@ export async function getItems({
 	}
 }
 
-export async function requestItem(itemId: number, borrowerId: string): Promise<boolean> {
+export async function requestItem(
+	itemId: number,
+	borrowerId: string
+): Promise<boolean> {
 	try {
 		// Step 1: Find the item
 		const item = await prisma.item.findUnique({
@@ -123,10 +126,23 @@ export async function requestItem(itemId: number, borrowerId: string): Promise<b
 			data: { status: "PENDING" },
 		});
 
-		console.log(here)
+		console.log(here);
 		return true;
 	} catch (e) {
 		console.error(e);
 		return false;
+	}
+}
+
+export async function getUserItems(id: string) {
+	try{
+		const items = await prisma.item.findMany({
+			where: { ownerId: id },
+		});
+
+		console.log(items)
+		return items;
+	}catch(e){
+		throw new Error
 	}
 }
