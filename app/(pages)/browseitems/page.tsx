@@ -26,7 +26,6 @@ import { TitemsNearby } from "@/types/C_types";
 import { ErrorAlert } from "@/components/ui/erroralert";
 import { useInView } from "react-intersection-observer";
 
-
 export default function BrowseItems() {
 	// State for search input
 	const [searchWord, setSearchWord] = useState("");
@@ -101,7 +100,7 @@ export default function BrowseItems() {
 		if (!isPending && !isSuccess) {
 			router.push("/");
 		}
-	}, [isSuccess]);
+	}, [isSuccess, isPending]);
 
 	// Mutation for requesting an item
 	const {
@@ -257,59 +256,69 @@ export default function BrowseItems() {
 	};
 
 	return (
-		<div className='container mx-auto flex flex-col gap-5'>
-			{/* Location access prompt */}
-			{showPromptAlert && (
-				<PromptAlert
-					message='Location access is needed to be able to view items near you'
-					acceptfn={handleAllowLocationAccess}
-					rejectfn={handleDenyLocationAccess}
-				/>
-			)}
-			{/* Error alert for item request */}
-			{showErrorAlert && <ErrorAlert message='Item Request Failed' />}
-			<div className='flex justify-end items-center gap-2 mt-6'>
-				<DropdownMenuCheckboxes
-					toggleItem={toggleItem}
-					selectedFilterItems={selectedFilterItems}
-				/>
-				<Link
-					href='/browseitems/postitems'
-					className='bg-blue-600 rounded-sm px-2 py-1 text-lg'>
-					Post Item
-				</Link>
-			</div>
-			<div className='relative'>
-				<form className='w-full'>
-					<Search className='absolute top-2.5 left-4' />
-					<input
-						type='text'
-						className='h-10 border w-full rounded pl-13'
-						placeholder='Search items...'
-						value={searchWord}
-						onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-							setSearchWord(e.target.value);
-							searchFilter();
-						}}
+		isSuccess && (
+			<div className='container mx-auto flex flex-col gap-5'>
+				{/* Location access prompt */}
+				{showPromptAlert && (
+					<PromptAlert
+						message='Location access is needed to be able to view items near you'
+						acceptfn={handleAllowLocationAccess}
+						rejectfn={handleDenyLocationAccess}
 					/>
-				</form>
-			</div>
-			<div>
-				<h1 className='text-lg'>
-					Location:{" "}
-					<span className='opacity-50 text-md'>Near You</span>
-				</h1>
-				<div className='grid md:grid-cols-2 xl:grid-cols-3 grid-cols-1 gap-2'>
-					{status === "pending" ? skel : cards}
-				</div>
-				{hasNextPage && (
-					<div>
-						{/* Load more items */}
-						{isFetchingNextPage && <div className="flex items-center justify-center text-2xl mt-4">Fetching...</div>}
-						<div ref={scrollSentinelRef} className="h-14"></div>
-					</div>
 				)}
+				{/* Error alert for item request */}
+				{showErrorAlert && <ErrorAlert message='Item Request Failed' />}
+				<div className='flex justify-end items-center gap-2 mt-6'>
+					<DropdownMenuCheckboxes
+						toggleItem={toggleItem}
+						selectedFilterItems={selectedFilterItems}
+					/>
+					<Link
+						href='/browseitems/postitems'
+						className='bg-blue-600 rounded-sm px-2 py-1 text-lg'>
+						Post Item
+					</Link>
+				</div>
+				<div className='relative'>
+					<form className='w-full'>
+						<Search className='absolute top-2.5 left-4' />
+						<input
+							type='text'
+							className='h-10 border w-full rounded pl-13'
+							placeholder='Search items...'
+							value={searchWord}
+							onChange={(
+								e: React.ChangeEvent<HTMLInputElement>
+							) => {
+								setSearchWord(e.target.value);
+								searchFilter();
+							}}
+						/>
+					</form>
+				</div>
+				<div>
+					<h1 className='text-lg'>
+						Location:{" "}
+						<span className='opacity-50 text-md'>Near You</span>
+					</h1>
+					<div className='grid md:grid-cols-2 xl:grid-cols-3 grid-cols-1 gap-2'>
+						{status === "pending" ? skel : cards}
+					</div>
+					{hasNextPage && (
+						<div>
+							{/* Load more items */}
+							{isFetchingNextPage && (
+								<div className='flex items-center justify-center text-2xl mt-4'>
+									Fetching...
+								</div>
+							)}
+							<div
+								ref={scrollSentinelRef}
+								className='h-14'></div>
+						</div>
+					)}
+				</div>
 			</div>
-		</div>
+		)
 	);
 }

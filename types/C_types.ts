@@ -106,6 +106,6 @@ type miniUserItemsData = {
 };
 export type TgetUserItemsFnReturn = {
 	trustScore: number;
-
+	name: string;
 	items: miniUserItemsData[];
 };

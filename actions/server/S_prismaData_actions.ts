@@ -141,6 +141,7 @@ export async function getUserItems(id: string) {
 			where: { uid: id },
 			select: {
 				trustScore: true,
+				name: true,
 				items: {select:{id:true, name:true, imageUrl:true, status: true, createdAt: true}},
 				// userCommunities: true,
 			},

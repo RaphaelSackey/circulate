@@ -95,6 +95,7 @@ export async function requestUserSpecificItemsData():Promise <TgetUserItemsFnRet
 		}
 
 		const data:TgetUserItemsFnReturn = await response.json();
+		console.log(data)
 		return data;
 	} catch (e) {
 		throw e;

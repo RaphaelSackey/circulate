@@ -43,11 +43,12 @@ export async function FBvalidateSessionCookie(
 	}
 }
 
-export async function PGaddNewUser(id: string): Promise<boolean> {
+export async function PGaddNewUser(id: string, firstName: string, lastName: string): Promise<boolean> {
 	try {
 		const user = await prisma.user.create({
 			data: {
 				uid: id,
+				name: firstName + " " + lastName, 
 			},
 		});
 

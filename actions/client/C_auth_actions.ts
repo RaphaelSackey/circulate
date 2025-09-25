@@ -50,7 +50,7 @@ export const clientActionSignup = async (
 		const token = await userCredential.user.getIdToken();
 		const uid = userCredential.user.uid;
 
-		const isSignedup = await clientSignupOnServer(uid);
+		const isSignedup = await clientSignupOnServer(uid, data.firstName, data.lastName);
 
 		if (!isSignedup.success) {
 			const user = auth.currentUser;
@@ -85,7 +85,10 @@ export async function clientLogin(
 		);
 		const token = await userCredential.user.getIdToken();
 		const uid = userCredential.user.uid;
-
+		
+		// future me, current database structure does not store the email so this is the easiest way to gain access to the email
+		localStorage.setItem('userEmail', data.email)
+		
 		return await getSessionCookie(token, uid);
 	} catch (e) {
 		if (e instanceof FirebaseError) {
@@ -135,7 +138,9 @@ export async function signOut(): Promise<{ status: boolean }> {
 }
 
 export async function clientSignupOnServer(
-	uid: string
+	uid: string,
+	firstName: string,
+	lastName: string
 ): Promise<{ success: boolean }> {
 	try {
 		const response = await fetch("/api/auth/signup", {
@@ -143,6 +148,8 @@ export async function clientSignupOnServer(
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({
 				uid: uid,
+				firstName: firstName,
+				lastName: lastName
 			}),
 		});
 
@@ -154,4 +161,8 @@ export async function clientSignupOnServer(
 	} catch (e) {
 		return { success: false };
 	}
+}
+
+export async function getUserInfo(){
+	
 }
